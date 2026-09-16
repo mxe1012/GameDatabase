@@ -1,4 +1,8 @@
 bin/
 obj/
 
+## Secrets 
 appsettings.Development.json
+appsettings.Local.json
+secrets.json
+*.pfx
