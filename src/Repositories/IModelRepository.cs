@@ -10,4 +10,31 @@ namespace GameDatabase.Repositories
         Task UpdateAsync(Developer developer);
         Task DeleteAsync(int id);
     }
+
+    public interface IGenreRepository
+    {
+        Task<IEnumerable<Genre>> GetGenresAsync();
+        Task <Genre> GetByIdAsync(int id);
+        Task AddAsync(Genre genre);
+        Task UpdateAsync(Genre genre);
+        Task DeleteAsync(int id);
+    }
+
+    public interface IEngineRepository
+    {
+        Task<IEnumerable<Engine>> GetEnginesAsync();
+        Task <Engine> GetByIdAsync();
+        Task AddAsync(Engine engine);
+        Task UpdateAsync(Engine engine);
+        Task DeleteAsync(int id);
+    }
+
+    public interface IGameRepository
+    {
+        Task<IEnumerable<Game>> GetGamesAsync();
+        Task <Game> GetByIdAsync();
+        Task AddAsync(Game game);
+        Task UpdateAsync(Game game);
+        Task DeleteAsync(int id);
+    }
 }
