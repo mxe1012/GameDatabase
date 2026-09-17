@@ -1,6 +1,7 @@
 using GameDatabase.Entites;
 
-namespace GameDatabase.Repositories{
+namespace GameDatabase.Repositories
+{
     public interface IDeveloperRepository
     {
         Task<IEnumerable<Developer>> GetDevelopersAsync();

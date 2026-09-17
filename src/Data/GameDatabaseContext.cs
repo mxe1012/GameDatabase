@@ -2,7 +2,8 @@ using Microsoft.EntityFrameworkCore;
 
 using GameDatabase.Entites;
 
-namespace GameDatabase.Data{
+namespace GameDatabase.Data
+{
     public class GameDatabaseContext(DbContextOptions<GameDatabaseContext> options): DbContext(options)
     {
         public DbSet<Developer> Developers {get; set;}
