@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
+using GameDatabase.Entites;
+
 public class GameDatabaseContext(DbContextOptions<GameDatabaseContext> options): DbContext(options)
 {
     public DbSet<Developer> Developers {get; set;}
