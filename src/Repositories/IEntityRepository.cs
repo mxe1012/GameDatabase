@@ -23,7 +23,7 @@ namespace GameDatabase.Repositories
     public interface IEngineRepository
     {
         Task<IEnumerable<Engine>> GetEnginesAsync();
-        Task <Engine> GetByIdAsync();
+        Task <Engine> GetByIdAsync(int id);
         Task AddAsync(Engine engine);
         Task UpdateAsync(Engine engine);
         Task DeleteAsync(int id);
@@ -32,7 +32,7 @@ namespace GameDatabase.Repositories
     public interface IGameRepository
     {
         Task<IEnumerable<Game>> GetGamesAsync();
-        Task <Game> GetByIdAsync();
+        Task <Game> GetByIdAsync(int id);
         Task AddAsync(Game game);
         Task UpdateAsync(Game game);
         Task DeleteAsync(int id);
