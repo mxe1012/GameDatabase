@@ -1,4 +1,3 @@
-
 namespace GameDatabase.DTOs
 {
     public class DeveloperResponseDto
