@@ -1,4 +1,3 @@
-
 namespace GameDatabase.Entites
 {
 public class Engine
