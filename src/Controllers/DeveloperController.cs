@@ -30,7 +30,7 @@ namespace GameDatabase.Controllers
         {
             try
             {
-                var developer = _developerService.GetDeveloperByIdAsync(id);
+                var developer = await _developerService.GetDeveloperByIdAsync(id);
                 return Ok(developer);
             }
             catch (KeyNotFoundException)
