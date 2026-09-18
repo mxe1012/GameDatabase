@@ -43,7 +43,7 @@ namespace GameDatabase.Services
             };
         }
 
-        public async Task AddEngineAsync(EngineRequestDto dto)
+        public async Task<EngineResponseDto> AddEngineAsync(EngineRequestDto dto)
         {
             var engine = new Engine
             {
@@ -51,6 +51,13 @@ namespace GameDatabase.Services
               IsOpenSource = dto.IsOpenSource 
             };
             await _engineRepository.AddAsync(engine);
+
+            return new EngineResponseDto
+            {
+                EngineId = engine.EngineId,
+                EngineName = engine.EngineName,
+                IsOpenSource = engine.IsOpenSource
+            };
         }
 
         public async Task UpdateEngineAsync(int id, EngineRequestDto dto)

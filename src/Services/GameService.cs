@@ -51,7 +51,7 @@ namespace GameDatabase.Services
             };
         }
 
-        public async Task AddGameAsync(GameRequestDto dto)
+        public async Task<GameResponseDto> AddGameAsync(GameRequestDto dto)
         {
             var game = new Game
             {
@@ -64,6 +64,17 @@ namespace GameDatabase.Services
             };
 
             await _gameRepository.AddAsync(game);
+
+            return new GameResponseDto
+            {
+                GameId = game.GameId,
+                GameName = game.GameName,
+                Price = game.Price,
+                ReleaseDate = game.ReleaseDate,
+                DeveloperId = game.DeveloperId,
+                GenreId = game.GenreId,
+                EngineId = game.EngineId,
+            };
         }
 
         public async Task UpdateGameAsync(int id, GameRequestDto dto)

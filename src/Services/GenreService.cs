@@ -41,13 +41,19 @@ namespace GameDatabase.Services
             };
         }
 
-        public async Task AddGenreAsync(GenreRequestDto dto)
+        public async Task<GenreResponseDto> AddGenreAsync(GenreRequestDto dto)
         {
             var genre = new Genre
             {
               GenreName = dto.GenreName,  
             };
             await _genreRepository.AddAsync(genre);
+
+            return new GenreResponseDto
+            {
+                GenreId = genre.GenreId,
+                GenreName = genre.GenreName
+            };
         }
 
         public async Task UpdateGenreAsync(int id, GenreRequestDto dto)
