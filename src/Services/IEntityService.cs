@@ -14,7 +14,7 @@ namespace GameDatabase.Services
     {
         Task<IEnumerable<GenreResponseDto>> GetGenreResponseDtosAsync();
         Task<GenreResponseDto> GetGenreByIdAsync(int id);
-        Task AddGenreAsync(GenreRequestDto dto);
+        Task<GenreResponseDto> AddGenreAsync(GenreRequestDto dto);
         Task UpdateGenreAsync(int id, GenreRequestDto dto);
         Task DeleteGenreAsync(int id);
     }
@@ -22,7 +22,7 @@ namespace GameDatabase.Services
     {
         Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync();
         Task<EngineResponseDto> GetEngineByIdAsync(int id);
-        Task AddEngineAsync(EngineRequestDto dto);
+        Task<EngineResponseDto> AddEngineAsync(EngineRequestDto dto);
         Task UpdateEngineAsync(int id, EngineRequestDto dto);
         Task DeleteEngineAsync(int id);
     }
@@ -30,7 +30,7 @@ namespace GameDatabase.Services
     {
         Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync();
         Task<GameResponseDto> GetGameByIdAsync(int id);
-        Task AddGameAsync(GameRequestDto dto);
+        Task<GameResponseDto> AddGameAsync(GameRequestDto dto);
         Task UpdateGameAsync(int id, GameRequestDto dto);
         Task DeleteGameAsync(int id);
     }
