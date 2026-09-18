@@ -27,6 +27,8 @@ namespace GameDatabase.Repositories
         public async Task AddAsync(Engine engine)
         {
             await _context.Engines.AddAsync(engine);
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Engine engine)
