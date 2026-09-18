@@ -6,7 +6,7 @@ namespace GameDatabase.Services
     {
         Task<IEnumerable<DeveloperResponseDto>> GetDeveloperResponseDtosAsync();
         Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id);
-        Task AddDeveloperAsync(DeveloperRequestDto dto);
+        Task<DeveloperResponseDto> AddDeveloperAsync(DeveloperRequestDto dto);
         Task UpdateDeveloperAsync(int id, DeveloperRequestDto dto);
         Task DeleteDeveloperAsync(int id);
     }

@@ -51,7 +51,7 @@ namespace GameDatabase.Services
             };
         }
 
-        public async Task AddDeveloperAsync(DeveloperRequestDto dto)
+        public async Task<DeveloperResponseDto> AddDeveloperAsync(DeveloperRequestDto dto)
         {
             var developer = new Developer
             {
@@ -64,6 +64,17 @@ namespace GameDatabase.Services
             };
 
             await _developerRepository.AddAsync(developer);
+
+            return new DeveloperResponseDto
+            {
+                DeveloperId = developer.DeveloperId,
+                DeveloperName = developer.DeveloperName,
+                City = developer.City,
+                State = developer.State,
+                CountryCode = developer.CountryCode,
+                YearFounded = developer.YearFounded,
+                IsActive = developer.IsActive
+            };
         }
 
         public async Task UpdateDeveloperAsync(int id, DeveloperRequestDto dto)
