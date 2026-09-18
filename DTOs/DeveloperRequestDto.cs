@@ -6,7 +6,7 @@ namespace GameDatabase.DTOs
     {
         public string DeveloperName {get; set;}
         public string City {get; set;}
-        [MaxLength(3)]
+        [MaxLength(2)]
         public string State {get; set;}
         [MaxLength(3)]
         public string CountryCode {get; set;}
