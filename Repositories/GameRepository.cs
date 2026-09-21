@@ -16,7 +16,7 @@ namespace GameDatabase.Repositories
 
         public async Task<IEnumerable<Game>> GetGamesAsync()
         {
-            return await _context.Games.ToListAsync();
+            return await _context.Games.OrderBy(g => g.GameId).ToArrayAsync();
         }
 
         public async Task<Game> GetByIdAsync(int id)

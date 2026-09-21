@@ -16,7 +16,7 @@ namespace GameDatabase.Repositories
 
         public async Task<IEnumerable<Genre>> GetGenresAsync()
         {
-            return await _context.Genres.ToListAsync();
+            return await _context.Genres.OrderBy(g => g.GenreId).ToListAsync();
         }
 
         public async Task<Genre> GetByIdAsync(int id)

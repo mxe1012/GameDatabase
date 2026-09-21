@@ -3,6 +3,7 @@ using System;
 using GameDatabase.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameDatabase.Migrations
 {
     [DbContext(typeof(GameDatabaseContext))]
-    partial class GameDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260918131145_AddCrud")]
+    partial class AddCrud
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,8 +39,7 @@ namespace GameDatabase.Migrations
 
                     b.Property<string>("CountryCode")
                         .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("character varying(3)");
+                        .HasColumnType("text");
 
                     b.Property<string>("DeveloperName")
                         .IsRequired()
@@ -48,8 +50,7 @@ namespace GameDatabase.Migrations
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("character varying(2)");
+                        .HasColumnType("text");
 
                     b.Property<int>("YearFounded")
                         .HasColumnType("integer");
@@ -100,14 +101,11 @@ namespace GameDatabase.Migrations
                     b.Property<int>("GenreId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IsForSale")
-                        .HasColumnType("boolean");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<DateOnly>("ReleaseDate")
                         .HasColumnType("date");
-
-                    b.Property<decimal>("RetailPrice")
-                        .HasColumnType("numeric");
 
                     b.HasKey("GameId");
 

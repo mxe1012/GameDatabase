@@ -16,7 +16,7 @@ namespace GameDatabase.Repositories
 
         public async Task<IEnumerable<Engine>> GetEnginesAsync()
         {
-            return await _context.Engines.ToListAsync();
+            return await _context.Engines.OrderBy(e => e.EngineId).ToListAsync();
         }
 
         public async Task<Engine> GetByIdAsync(int id)
@@ -27,6 +27,8 @@ namespace GameDatabase.Repositories
         public async Task AddAsync(Engine engine)
         {
             await _context.Engines.AddAsync(engine);
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Engine engine)

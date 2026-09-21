@@ -21,8 +21,9 @@ namespace GameDatabase.Services
                 {
                     GameId = p.GameId,
                     GameName = p.GameName,
-                    Price = p.Price,
+                    RetailPrice = p.RetailPrice,
                     ReleaseDate = p.ReleaseDate,
+                    IsForSale = p.IsForSale,
                     DeveloperId = p.DeveloperId,
                     GenreId = p.GenreId,
                     EngineId = p.EngineId,
@@ -43,8 +44,9 @@ namespace GameDatabase.Services
             {
                 GameId = game.GameId,
                 GameName = game.GameName,
-                Price = game.Price,
+                RetailPrice = game.RetailPrice,
                 ReleaseDate = game.ReleaseDate,
+                IsForSale = game.IsForSale,
                 DeveloperId = game.DeveloperId,
                 GenreId = game.GenreId,
                 EngineId = game.EngineId,
@@ -56,8 +58,9 @@ namespace GameDatabase.Services
             var game = new Game
             {
                 GameName = dto.GameName,
-                Price = dto.Price,
+                RetailPrice = dto.RetailPrice,
                 ReleaseDate = dto.ReleaseDate,
+                IsForSale = dto.IsForSale,
                 DeveloperId = dto.DeveloperId,
                 GenreId = dto.GenreId,
                 EngineId = dto.EngineId, 
@@ -69,8 +72,9 @@ namespace GameDatabase.Services
             {
                 GameId = game.GameId,
                 GameName = game.GameName,
-                Price = game.Price,
+                RetailPrice = game.RetailPrice,
                 ReleaseDate = game.ReleaseDate,
+                IsForSale = game.IsForSale,
                 DeveloperId = game.DeveloperId,
                 GenreId = game.GenreId,
                 EngineId = game.EngineId,
@@ -86,8 +90,9 @@ namespace GameDatabase.Services
                 throw new KeyNotFoundException("Game not found");
             }
             game.GameName = dto.GameName;
-            game.Price = dto.Price;
+            game.RetailPrice = dto.RetailPrice;
             game.ReleaseDate = dto.ReleaseDate;
+            game.IsForSale = dto.IsForSale;
             game.DeveloperId = dto.DeveloperId;
             game.GenreId = dto.GenreId;
             game.EngineId = dto.EngineId;

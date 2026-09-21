@@ -1,10 +1,15 @@
-namespace GameDatabase.DTOs
+using System.ComponentModel.DataAnnotations;
+
+namespace GameDatabase.Entites 
 {
-    public class DeveloperRequestDto
+    public class Developer
     {
+        public int DeveloperId {get; set;}
         public string DeveloperName {get; set;}
         public string City {get; set;}
+        [MaxLength(2)]
         public string State {get; set;}
+        [MaxLength(3)]
         public string CountryCode {get; set;}
         public int YearFounded {get; set;}
         public bool IsActive {get; set;} = true;
