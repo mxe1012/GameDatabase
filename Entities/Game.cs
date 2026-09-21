@@ -4,7 +4,7 @@ namespace GameDatabase.Entites
     {
         public int GameId {get; set;}
         public string GameName {get; set;}
-        public decimal Price {get; set;}
+        public decimal RetailPrice {get; set;}
         public DateOnly ReleaseDate {get; set;}
         public int DeveloperId {get; set;}
         public Developer Developer {get; set;}

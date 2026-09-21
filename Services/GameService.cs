@@ -21,7 +21,7 @@ namespace GameDatabase.Services
                 {
                     GameId = p.GameId,
                     GameName = p.GameName,
-                    Price = p.Price,
+                    RetailPrice = p.RetailPrice,
                     ReleaseDate = p.ReleaseDate,
                     DeveloperId = p.DeveloperId,
                     GenreId = p.GenreId,
@@ -43,7 +43,7 @@ namespace GameDatabase.Services
             {
                 GameId = game.GameId,
                 GameName = game.GameName,
-                Price = game.Price,
+                RetailPrice = game.RetailPrice,
                 ReleaseDate = game.ReleaseDate,
                 DeveloperId = game.DeveloperId,
                 GenreId = game.GenreId,
@@ -56,7 +56,7 @@ namespace GameDatabase.Services
             var game = new Game
             {
                 GameName = dto.GameName,
-                Price = dto.Price,
+                RetailPrice = dto.RetailPrice,
                 ReleaseDate = dto.ReleaseDate,
                 DeveloperId = dto.DeveloperId,
                 GenreId = dto.GenreId,
@@ -69,7 +69,7 @@ namespace GameDatabase.Services
             {
                 GameId = game.GameId,
                 GameName = game.GameName,
-                Price = game.Price,
+                RetailPrice = game.RetailPrice,
                 ReleaseDate = game.ReleaseDate,
                 DeveloperId = game.DeveloperId,
                 GenreId = game.GenreId,
@@ -86,7 +86,7 @@ namespace GameDatabase.Services
                 throw new KeyNotFoundException("Game not found");
             }
             game.GameName = dto.GameName;
-            game.Price = dto.Price;
+            game.RetailPrice = dto.RetailPrice;
             game.ReleaseDate = dto.ReleaseDate;
             game.DeveloperId = dto.DeveloperId;
             game.GenreId = dto.GenreId;
