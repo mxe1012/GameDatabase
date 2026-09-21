@@ -19,7 +19,7 @@ namespace GameDatabase.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var games = _gameService.GetGameResponseDtosAsync();
+            var games = await _gameService.GetGameResponseDtosAsync();
             return Ok(games);
         }
 
