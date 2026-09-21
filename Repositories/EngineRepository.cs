@@ -16,7 +16,7 @@ namespace GameDatabase.Repositories
 
         public async Task<IEnumerable<Engine>> GetEnginesAsync()
         {
-            return await _context.Engines.ToListAsync();
+            return await _context.Engines.OrderBy(e => e.EngineId).ToListAsync();
         }
 
         public async Task<Engine> GetByIdAsync(int id)
