@@ -23,6 +23,7 @@ namespace GameDatabase.Services
                     GameName = p.GameName,
                     RetailPrice = p.RetailPrice,
                     ReleaseDate = p.ReleaseDate,
+                    IsForSale = p.IsForSale,
                     DeveloperId = p.DeveloperId,
                     GenreId = p.GenreId,
                     EngineId = p.EngineId,
@@ -45,6 +46,7 @@ namespace GameDatabase.Services
                 GameName = game.GameName,
                 RetailPrice = game.RetailPrice,
                 ReleaseDate = game.ReleaseDate,
+                IsForSale = game.IsForSale,
                 DeveloperId = game.DeveloperId,
                 GenreId = game.GenreId,
                 EngineId = game.EngineId,
@@ -58,6 +60,7 @@ namespace GameDatabase.Services
                 GameName = dto.GameName,
                 RetailPrice = dto.RetailPrice,
                 ReleaseDate = dto.ReleaseDate,
+                IsForSale = dto.IsForSale,
                 DeveloperId = dto.DeveloperId,
                 GenreId = dto.GenreId,
                 EngineId = dto.EngineId, 
@@ -71,6 +74,7 @@ namespace GameDatabase.Services
                 GameName = game.GameName,
                 RetailPrice = game.RetailPrice,
                 ReleaseDate = game.ReleaseDate,
+                IsForSale = game.IsForSale,
                 DeveloperId = game.DeveloperId,
                 GenreId = game.GenreId,
                 EngineId = game.EngineId,
@@ -88,6 +92,7 @@ namespace GameDatabase.Services
             game.GameName = dto.GameName;
             game.RetailPrice = dto.RetailPrice;
             game.ReleaseDate = dto.ReleaseDate;
+            game.IsForSale = dto.IsForSale;
             game.DeveloperId = dto.DeveloperId;
             game.GenreId = dto.GenreId;
             game.EngineId = dto.EngineId;
