@@ -1,8 +1,8 @@
 # GameDatabase
 
-GameDatabase is a mini database built on ASP .NET and EF Core. 
+GameDatabase is a Web API/backend project built on ASP.NET and EF Core, using Postgres/Npgsql as the underlying database engine. 
 
-EF Core is employed as an object-relational mapper (ORM), while ASP .NET serves the web app. Additionally, Swagger UI is used to ease interactions with the database via CRUD. 
+EF Core is employed as an object-relational mapper (ORM), while ASP.NET serves the web API layer. Additionally, Swagger UI is used to ease interactions with the database via CRUD. 
 
 ## Folders and Files
 Each folder houses its own set of files that specialize in achieving a certain goal.
