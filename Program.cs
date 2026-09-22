@@ -66,7 +66,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapGet("/secret", (ClaimsPrincipal user) => $"Hello {user.Identity?.Name}. My secret")
-    .RequireAuthorization();
-
 app.Run();
