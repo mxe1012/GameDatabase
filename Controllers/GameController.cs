@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using GameDatabase.DTOs;
 using GameDatabase.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameDatabase.Controllers
 {   
@@ -36,7 +37,7 @@ namespace GameDatabase.Controllers
                 return NotFound();
             }
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(GameRequestDto dto)
         {
@@ -44,6 +45,7 @@ namespace GameDatabase.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.GameId }, created);
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(int id, GameRequestDto dto)
         {
@@ -58,6 +60,7 @@ namespace GameDatabase.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
