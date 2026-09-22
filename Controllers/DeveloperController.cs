@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using GameDatabase.DTOs;
 using GameDatabase.Services;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace GameDatabase.Controllers
@@ -17,7 +18,7 @@ namespace GameDatabase.Controllers
             _developerService = developerService;
         }
 
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
