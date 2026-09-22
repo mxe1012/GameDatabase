@@ -18,7 +18,6 @@ namespace GameDatabase.Controllers
             _developerService = developerService;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -40,6 +39,7 @@ namespace GameDatabase.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(DeveloperRequestDto dto)
         {
@@ -47,6 +47,7 @@ namespace GameDatabase.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.DeveloperId }, created);
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(int id, DeveloperRequestDto dto)
         {
@@ -61,6 +62,7 @@ namespace GameDatabase.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
