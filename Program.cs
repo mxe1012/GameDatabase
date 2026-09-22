@@ -40,10 +40,7 @@ builder.Services.AddSwaggerGen(options =>
             In = ParameterLocation.Header,
             Description = "Enter your JWT token. Example: eyJhbGciOi..."
         });
-        options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
-        {
-            [new OpenApiSecuritySchemeReference("Bearer", document)] = new List<string>()
-        });
+        options.OperationFilter<AuthorizeCheckOperationFilter>();
     }
 );
 
