@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using GameDatabase.DTOs;
 using GameDatabase.Services;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace GameDatabase.Controllers
 {   
     [ApiController]
@@ -36,14 +38,14 @@ namespace GameDatabase.Controllers
                 return NotFound();
             }
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(GenreRequestDto dto)
         {
             var created = await _genreService.AddGenreAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.GenreId }, created);
         }
-
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(int id, GenreRequestDto dto)
         {
@@ -57,7 +59,7 @@ namespace GameDatabase.Controllers
                 return NotFound();
             }
         }
-
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
