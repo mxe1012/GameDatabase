@@ -4,6 +4,7 @@ using GameDatabase.Repositories;
 using GameDatabase.Services;
 using Microsoft.OpenApi;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +46,7 @@ builder.Services.AddSwaggerGen(options =>
 );
 
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
 var app = builder.Build();
 
