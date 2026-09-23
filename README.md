@@ -5,6 +5,7 @@ GameDatabase is a Web API/backend project built on ASP.NET and EF Core, using Po
 EF Core is employed as an object-relational mapper (ORM), while ASP.NET serves the web API layer. Additionally, Swagger UI is used to ease interactions with the database via CRUD.
 
 ## Folders and Files
+
 Each folder houses its own set of files that specialize in achieving a certain goal.
 
 - The `Controllers` folder contains files that build CRUD endpoints for each entity. Currently, the API/endpoints support `GET`, `POST`, `PUT`, and `DELETE`.
