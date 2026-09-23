@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using GameDatabase.DTOs;
 using GameDatabase.Services;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace GameDatabase.Controllers
 {
     [ApiController]
@@ -35,12 +37,14 @@ namespace GameDatabase.Controllers
                 return NotFound();
             }
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(EngineRequestDto dto)
         {
             var created = await _engineService.AddEngineAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.EngineId }, created);
         }
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(int id, EngineRequestDto dto)
         {
@@ -54,6 +58,7 @@ namespace GameDatabase.Controllers
                 return NotFound();
             }
         }
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
