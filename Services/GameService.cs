@@ -7,10 +7,12 @@ namespace GameDatabase.Services
     public class GameService: IGameService
     {
         private readonly IGameRepository _gameRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GameService(IGameRepository gameRepository)
+        public GameService(IGameRepository gameRepository, IHttpContextAccessor httpContextAccessor)
         {
             _gameRepository = gameRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync()
@@ -27,6 +29,7 @@ namespace GameDatabase.Services
                     DeveloperId = p.DeveloperId,
                     GenreId = p.GenreId,
                     EngineId = p.EngineId,
+                    CreatedBy = p.CreatedBy
                 }
             );
         }
@@ -50,6 +53,7 @@ namespace GameDatabase.Services
                 DeveloperId = game.DeveloperId,
                 GenreId = game.GenreId,
                 EngineId = game.EngineId,
+                CreatedBy = game.CreatedBy,
             };
         }
 
@@ -63,7 +67,8 @@ namespace GameDatabase.Services
                 IsForSale = dto.IsForSale,
                 DeveloperId = dto.DeveloperId,
                 GenreId = dto.GenreId,
-                EngineId = dto.EngineId, 
+                EngineId = dto.EngineId,
+                CreatedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name 
             };
 
             await _gameRepository.AddAsync(game);
@@ -78,6 +83,7 @@ namespace GameDatabase.Services
                 DeveloperId = game.DeveloperId,
                 GenreId = game.GenreId,
                 EngineId = game.EngineId,
+                CreatedBy = game.CreatedBy
             };
         }
 

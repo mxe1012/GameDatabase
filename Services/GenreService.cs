@@ -7,10 +7,12 @@ namespace GameDatabase.Services
     public class GenreService : IGenreService
     {
         private readonly IGenreRepository _genreRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GenreService(IGenreRepository genreRepository)
+        public GenreService(IGenreRepository genreRepository, IHttpContextAccessor httpContextAccessor)
         {
             _genreRepository = genreRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<GenreResponseDto>> GetGenreResponseDtosAsync()
@@ -21,6 +23,7 @@ namespace GameDatabase.Services
                 {
                     GenreId = g.GenreId,
                     GenreName = g.GenreName,
+                    CreatedBy = g.CreatedBy
                 }
             );
         }
@@ -38,6 +41,7 @@ namespace GameDatabase.Services
             {
                 GenreId = genre.GenreId,
                 GenreName = genre.GenreName,
+                CreatedBy = genre.CreatedBy
             };
         }
 
@@ -45,14 +49,16 @@ namespace GameDatabase.Services
         {
             var genre = new Genre
             {
-              GenreName = dto.GenreName,  
+              GenreName = dto.GenreName,
+              CreatedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name  
             };
             await _genreRepository.AddAsync(genre);
 
             return new GenreResponseDto
             {
                 GenreId = genre.GenreId,
-                GenreName = genre.GenreName
+                GenreName = genre.GenreName,
+                CreatedBy = genre.CreatedBy
             };
         }
 

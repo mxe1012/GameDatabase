@@ -7,16 +7,18 @@ namespace GameDatabase.Services
     public class DeveloperService: IDeveloperService
     {
         private readonly IDeveloperRepository _developerRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DeveloperService(IDeveloperRepository developerRepository)
+        public DeveloperService(IDeveloperRepository developerRepository, IHttpContextAccessor httpContextAccessor)
         {
             _developerRepository = developerRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<DeveloperResponseDto>> GetDeveloperResponseDtosAsync()
         {
             var developers = await _developerRepository.GetDevelopersAsync();
-
+            
             return developers.Select(p => new DeveloperResponseDto
                 {
                     DeveloperId = p.DeveloperId,
@@ -26,6 +28,7 @@ namespace GameDatabase.Services
                     CountryCode = p.CountryCode,
                     YearFounded = p.YearFounded,
                     IsActive = p.IsActive,
+                    CreatedBy = p.CreatedBy,
                 }
             );
         }
@@ -48,11 +51,12 @@ namespace GameDatabase.Services
                 CountryCode = developer.CountryCode,
                 YearFounded = developer.YearFounded,
                 IsActive = developer.IsActive,
+                CreatedBy = developer.CreatedBy
             };
         }
 
         public async Task<DeveloperResponseDto> AddDeveloperAsync(DeveloperRequestDto dto)
-        {
+        {   
             var developer = new Developer
             {
                 DeveloperName = dto.DeveloperName,
@@ -60,7 +64,8 @@ namespace GameDatabase.Services
                 State = dto.State,
                 CountryCode = dto.CountryCode,
                 YearFounded = dto.YearFounded,
-                IsActive = dto.IsActive, 
+                IsActive = dto.IsActive,
+                CreatedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name,
             };
 
             await _developerRepository.AddAsync(developer);
@@ -73,7 +78,8 @@ namespace GameDatabase.Services
                 State = developer.State,
                 CountryCode = developer.CountryCode,
                 YearFounded = developer.YearFounded,
-                IsActive = developer.IsActive
+                IsActive = developer.IsActive,
+                CreatedBy = developer.CreatedBy,
             };
         }
 

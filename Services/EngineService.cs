@@ -7,10 +7,12 @@ namespace GameDatabase.Services
     public class EngineService : IEngineService
     {
         private readonly IEngineRepository _engineRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public EngineService(IEngineRepository EngineRepository)
+        public EngineService(IEngineRepository EngineRepository, IHttpContextAccessor httpContextAccessor)
         {
             _engineRepository = EngineRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync()
@@ -21,7 +23,8 @@ namespace GameDatabase.Services
                 {
                     EngineId = g.EngineId,
                     EngineName = g.EngineName,
-                    IsOpenSource = g.IsOpenSource
+                    IsOpenSource = g.IsOpenSource,
+                    CreatedBy = g.CreatedBy
                 }
             );
         }
@@ -39,7 +42,8 @@ namespace GameDatabase.Services
             {
                 EngineId = engine.EngineId,
                 EngineName = engine.EngineName,
-                IsOpenSource = engine.IsOpenSource
+                IsOpenSource = engine.IsOpenSource,
+                CreatedBy = engine.CreatedBy
             };
         }
 
@@ -48,7 +52,8 @@ namespace GameDatabase.Services
             var engine = new Engine
             {
               EngineName = dto.EngineName, 
-              IsOpenSource = dto.IsOpenSource 
+              IsOpenSource = dto.IsOpenSource, 
+              CreatedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name
             };
             await _engineRepository.AddAsync(engine);
 
@@ -56,7 +61,8 @@ namespace GameDatabase.Services
             {
                 EngineId = engine.EngineId,
                 EngineName = engine.EngineName,
-                IsOpenSource = engine.IsOpenSource
+                IsOpenSource = engine.IsOpenSource,
+                CreatedBy = engine.CreatedBy
             };
         }
 
