@@ -13,5 +13,6 @@ namespace GameDatabase.Entites
         public Genre Genre {get; set;}
         public int EngineId {get; set;}
         public Engine Engine {get; set;}
+        public string? CreatedBy {get; set;}
     }
 }

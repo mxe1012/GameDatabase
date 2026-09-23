@@ -13,5 +13,6 @@ namespace GameDatabase.Entites
         public string CountryCode {get; set;}
         public int YearFounded {get; set;}
         public bool IsActive {get; set;} = true;
+        public string? CreatedBy {get; set;}
     }
 }
