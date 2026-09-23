@@ -10,5 +10,6 @@ namespace GameDatabase.DTOs
         public int DeveloperId { get; set; }
         public int GenreId { get; set; }
         public int EngineId { get; set; }
+        public string CreatedBy {get; set;}
     }
 }

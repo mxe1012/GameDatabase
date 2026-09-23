@@ -4,5 +4,6 @@ namespace GameDatabase.DTOs
     {
         public int GenreId {get; set;}
         public string GenreName {get; set;}
+        public string CreatedBy {get; set;}
     }
 }
