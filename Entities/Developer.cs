@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GameDatabase.Entites 
 {
-    public class Developer
+    public class Developer : IAdutiable
     {
         public int DeveloperId {get; set;}
         public string DeveloperName {get; set;}
