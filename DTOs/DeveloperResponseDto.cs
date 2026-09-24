@@ -1,6 +1,8 @@
+using GameDatabase.Entites;
+
 namespace GameDatabase.DTOs
 {
-    public class DeveloperResponseDto
+    public class DeveloperResponseDto : IAdutiable
     {   
         public int DeveloperId {get; set;}
         public string DeveloperName {get; set;}

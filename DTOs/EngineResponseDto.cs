@@ -1,6 +1,8 @@
+using GameDatabase.Entites;
+
 namespace GameDatabase.DTOs
 {
-    public class EngineResponseDto
+    public class EngineResponseDto : IAdutiable
     {
         public int EngineId {get; set;}
         public string EngineName {get; set;}
