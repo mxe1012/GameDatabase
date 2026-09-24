@@ -8,7 +8,7 @@ namespace GameDatabase.Services
         Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id);
         Task<DeveloperResponseDto> AddDeveloperAsync(DeveloperRequestDto dto);
         Task UpdateDeveloperAsync(int id, DeveloperRequestDto dto);
-        Task DeleteDeveloperAsync(int id);
+        Task DeleteDeveloperAsync(int id, bool isHardDelete);
     }
     public interface IGenreService
     {

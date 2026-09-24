@@ -38,31 +38,23 @@ namespace GameDatabase.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id, string? deletedBy)
+        public async Task DeleteAsync(int id, string? deletedBy, bool isHardDelete)
         {
             var developer = await _context.Developers.FindAsync(id);
 
             if (developer != null)
             {
-                developer.IsDeleted = true;
-                developer.DeletedBy = deletedBy;
-                developer.DeletedAt = DateTime.UtcNow;
-
+                if(isHardDelete){
+                    _context.Developers.Remove(developer);
+                }
+                else
+                {
+                    developer.IsDeleted = true;
+                    developer.DeletedBy = deletedBy;
+                    developer.DeletedAt = DateTime.UtcNow; 
+                }
                 await _context.SaveChangesAsync();
             }
         }
-        
-        // public async Task DeleteAsync(int id)
-        // {
-        //     var developer = await _context.Developers.FindAsync(id);
-
-        //     if (developer != null)
-        //     {
-        //         _context.Developers.Remove(developer);
-
-        //         await _context.SaveChangesAsync();
-        //     }
-        // }
-
     }
 }

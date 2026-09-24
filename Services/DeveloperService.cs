@@ -109,7 +109,7 @@ namespace GameDatabase.Services
             await _developerRepository.UpdateAsync(developer);
         }
 
-        public async Task DeleteDeveloperAsync(int id)
+        public async Task DeleteDeveloperAsync(int id, bool isHardDelete)
         {
             var developer = await _developerRepository.GetByIdAsync(id);
 
@@ -120,7 +120,7 @@ namespace GameDatabase.Services
 
             var deletedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
 
-            await _developerRepository.DeleteAsync(id, deletedBy);
+            await _developerRepository.DeleteAsync(id, deletedBy, isHardDelete);
         }
 
     }

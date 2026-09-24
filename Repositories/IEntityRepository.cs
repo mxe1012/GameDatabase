@@ -8,7 +8,7 @@ namespace GameDatabase.Repositories
         Task <Developer> GetByIdAsync(int id);
         Task AddAsync(Developer developer);
         Task UpdateAsync(Developer developer);
-        Task DeleteAsync(int id, string? deletedBy);
+        Task DeleteAsync(int id, string? deletedBy, bool isHardDelete);
     }
 
     public interface IGenreRepository
