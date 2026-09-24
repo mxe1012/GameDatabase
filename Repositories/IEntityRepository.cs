@@ -17,7 +17,7 @@ namespace GameDatabase.Repositories
         Task <Genre> GetByIdAsync(int id);
         Task AddAsync(Genre genre);
         Task UpdateAsync(Genre genre);
-        Task DeleteAsync(int id, string? deletedBy);
+        Task DeleteAsync(int id, string? deletedBy, bool isHardDelete);
     }
 
     public interface IEngineRepository

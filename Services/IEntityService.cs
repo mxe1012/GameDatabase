@@ -16,7 +16,7 @@ namespace GameDatabase.Services
         Task<GenreResponseDto> GetGenreByIdAsync(int id);
         Task<GenreResponseDto> AddGenreAsync(GenreRequestDto dto);
         Task UpdateGenreAsync(int id, GenreRequestDto dto);
-        Task DeleteGenreAsync(int id);
+        Task DeleteGenreAsync(int id, bool isHardDelete);
     }
     public interface IEngineService
     {

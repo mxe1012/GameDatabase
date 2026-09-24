@@ -83,7 +83,7 @@ namespace GameDatabase.Services
             await _genreRepository.UpdateAsync(genre);
         }
 
-        public async Task DeleteGenreAsync(int id)
+        public async Task DeleteGenreAsync(int id, bool isHardDelete)
         {
             var genre = await _genreRepository.GetByIdAsync(id);
 
@@ -94,7 +94,7 @@ namespace GameDatabase.Services
 
             var deletedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
 
-            await _genreRepository.DeleteAsync(id, deletedBy);
+            await _genreRepository.DeleteAsync(id, deletedBy, isHardDelete);
         }
         
     }
