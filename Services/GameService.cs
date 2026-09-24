@@ -105,7 +105,7 @@ namespace GameDatabase.Services
             await _gameRepository.UpdateAsync(game);
         }
 
-        public async Task DeleteGameAsync(int id)
+        public async Task DeleteGameAsync(int id, bool isHardDelete)
         {
             var game = await _gameRepository.GetByIdAsync(id);
 
@@ -113,7 +113,10 @@ namespace GameDatabase.Services
             {
                 throw new KeyNotFoundException("Game not found");
             }
-            await _gameRepository.DeleteAsync(id);
+
+            var deletedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+
+            await _gameRepository.DeleteAsync(id, deletedBy, isHardDelete);
         }
     }
 }

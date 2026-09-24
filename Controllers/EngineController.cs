@@ -45,7 +45,7 @@ namespace GameDatabase.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.EngineId }, created);
         }
         [Authorize]
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, EngineRequestDto dto)
         {
             try
@@ -59,12 +59,16 @@ namespace GameDatabase.Controllers
             }
         }
         [Authorize]
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, bool isHardDelete=false)
         {
+            if(isHardDelete && !User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
             try
             {
-                await _engineService.DeleteEngineAsync(id);
+                await _engineService.DeleteEngineAsync(id, isHardDelete);
                 return NoContent();
             }
             catch (KeyNotFoundException)

@@ -46,7 +46,7 @@ namespace GameDatabase.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.GenreId }, created);
         }
         [Authorize]
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, GenreRequestDto dto)
         {
             try
@@ -60,12 +60,17 @@ namespace GameDatabase.Controllers
             }
         }
         [Authorize]
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
-        {
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, bool isHardDelete=false)
+        {   
+            if(isHardDelete && !User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+
             try
             {
-                await _genreService.DeleteGenreAsync(id);
+                await _genreService.DeleteGenreAsync(id, isHardDelete);
                 return NoContent();
             }
             catch (KeyNotFoundException)

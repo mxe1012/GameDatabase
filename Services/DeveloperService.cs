@@ -29,6 +29,9 @@ namespace GameDatabase.Services
                     YearFounded = p.YearFounded,
                     IsActive = p.IsActive,
                     CreatedBy = p.CreatedBy,
+                    IsDeleted = p.IsDeleted,
+                    DeletedBy= p.DeletedBy,
+                    DeletedAt = p.DeletedAt
                 }
             );
         }
@@ -51,7 +54,10 @@ namespace GameDatabase.Services
                 CountryCode = developer.CountryCode,
                 YearFounded = developer.YearFounded,
                 IsActive = developer.IsActive,
-                CreatedBy = developer.CreatedBy
+                CreatedBy = developer.CreatedBy,
+                IsDeleted = developer.IsDeleted,
+                DeletedBy = developer.DeletedBy,
+                DeletedAt = developer.DeletedAt
             };
         }
 
@@ -80,6 +86,9 @@ namespace GameDatabase.Services
                 YearFounded = developer.YearFounded,
                 IsActive = developer.IsActive,
                 CreatedBy = developer.CreatedBy,
+                IsDeleted = developer.IsDeleted,
+                DeletedBy = developer.DeletedBy,
+                DeletedAt = developer.DeletedAt
             };
         }
 
@@ -100,7 +109,7 @@ namespace GameDatabase.Services
             await _developerRepository.UpdateAsync(developer);
         }
 
-        public async Task DeleteDeveloperAsync(int id)
+        public async Task DeleteDeveloperAsync(int id, bool isHardDelete)
         {
             var developer = await _developerRepository.GetByIdAsync(id);
 
@@ -108,7 +117,10 @@ namespace GameDatabase.Services
             {
                 throw new KeyNotFoundException("Developer not found");
             }
-            await _developerRepository.DeleteAsync(id);
+
+            var deletedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+
+            await _developerRepository.DeleteAsync(id, deletedBy, isHardDelete);
         }
 
     }

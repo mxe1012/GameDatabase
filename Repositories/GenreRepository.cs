@@ -16,7 +16,7 @@ namespace GameDatabase.Repositories
 
         public async Task<IEnumerable<Genre>> GetGenresAsync()
         {
-            return await _context.Genres.OrderBy(g => g.GenreId).ToListAsync();
+            return await _context.Genres.Where(g => !g.IsDeleted).OrderBy(g => g.GenreId).ToListAsync();
         }
 
         public async Task<Genre> GetByIdAsync(int id)
@@ -38,18 +38,24 @@ namespace GameDatabase.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, string? deletedBy, bool isHardDelete)
         {
             var genre = await _context.Genres.FindAsync(id);
 
             if(genre != null)
             {
-                _context.Genres.Remove(genre);
-
+                if (isHardDelete)
+                {
+                    _context.Genres.Remove(genre);
+                }
+                else
+                {
+                    genre.IsDeleted = true;
+                    genre.DeletedBy = deletedBy;
+                    genre.DeletedAt = DateTime.UtcNow; 
+                }
                 await _context.SaveChangesAsync();
             }
-
         }
-
     }
 }

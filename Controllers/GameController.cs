@@ -46,7 +46,7 @@ namespace GameDatabase.Controllers
         }
 
         [Authorize]
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, GameRequestDto dto)
         {
             try
@@ -61,12 +61,16 @@ namespace GameDatabase.Controllers
         }
 
         [Authorize]
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, bool isHardDelete)
         {
+            if(isHardDelete && !User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
             try
             {
-                await _gameService.DeleteGameAsync(id);
+                await _gameService.DeleteGameAsync(id, isHardDelete);
                 return NoContent();
             }
             catch (KeyNotFoundException)

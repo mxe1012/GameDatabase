@@ -8,7 +8,7 @@ namespace GameDatabase.Repositories
         Task <Developer> GetByIdAsync(int id);
         Task AddAsync(Developer developer);
         Task UpdateAsync(Developer developer);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, string? deletedBy, bool isHardDelete);
     }
 
     public interface IGenreRepository
@@ -17,7 +17,7 @@ namespace GameDatabase.Repositories
         Task <Genre> GetByIdAsync(int id);
         Task AddAsync(Genre genre);
         Task UpdateAsync(Genre genre);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, string? deletedBy, bool isHardDelete);
     }
 
     public interface IEngineRepository
@@ -26,7 +26,7 @@ namespace GameDatabase.Repositories
         Task <Engine> GetByIdAsync(int id);
         Task AddAsync(Engine engine);
         Task UpdateAsync(Engine engine);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, string? deletedBy, bool isHardDelete);
     }
 
     public interface IGameRepository
@@ -35,6 +35,6 @@ namespace GameDatabase.Repositories
         Task <Game> GetByIdAsync(int id);
         Task AddAsync(Game game);
         Task UpdateAsync(Game game);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, string? deletedBy, bool isHardDelete);
     }
 }

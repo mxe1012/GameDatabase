@@ -16,7 +16,7 @@ namespace GameDatabase.Repositories
 
         public async Task<IEnumerable<Game>> GetGamesAsync()
         {
-            return await _context.Games.OrderBy(g => g.GameId).ToArrayAsync();
+            return await _context.Games.Where(g => g.IsDeleted).OrderBy(g => g.GameId).ToArrayAsync();
         }
 
         public async Task<Game> GetByIdAsync(int id)
@@ -38,17 +38,24 @@ namespace GameDatabase.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, string? deletedBy, bool isHardDelete)
         {
             var game = await _context.Games.FindAsync(id);
 
             if(game != null)
             {
-                _context.Games.Remove(game);
-
+                if(isHardDelete)
+                {
+                    _context.Games.Remove(game);
+                }
+                else
+                {
+                    game.IsDeleted = true;
+                    game.DeletedBy = deletedBy;
+                    game.DeletedAt = DateTime.UtcNow;
+                }
                 await _context.SaveChangesAsync();
             }
         }
-
     }
 }

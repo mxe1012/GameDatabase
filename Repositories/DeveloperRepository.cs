@@ -16,7 +16,7 @@ namespace GameDatabase.Repositories
 
         public async Task<IEnumerable<Developer>> GetDevelopersAsync()
         {
-            return await _context.Developers.OrderBy(d => d.DeveloperId).ToListAsync();
+            return await _context.Developers.Where(d => !d.IsDeleted).OrderBy(d => d.DeveloperId).ToListAsync();
         }
 
         public async Task<Developer> GetByIdAsync(int id)
@@ -38,17 +38,23 @@ namespace GameDatabase.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, string? deletedBy, bool isHardDelete)
         {
             var developer = await _context.Developers.FindAsync(id);
 
             if (developer != null)
             {
-                _context.Developers.Remove(developer);
-
+                if(isHardDelete){
+                    _context.Developers.Remove(developer);
+                }
+                else
+                {
+                    developer.IsDeleted = true;
+                    developer.DeletedBy = deletedBy;
+                    developer.DeletedAt = DateTime.UtcNow; 
+                }
                 await _context.SaveChangesAsync();
             }
         }
-
     }
 }
