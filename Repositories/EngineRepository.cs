@@ -46,7 +46,7 @@ namespace GameDatabase.Repositories
             {
                 engine.IsDeleted = true;
                 engine.DeletedBy = deletedBy;
-                engine.DeletedAt = DateTime.Now;
+                engine.DeletedAt = DateTime.UtcNow;
 
                 await _context.SaveChangesAsync();
             }
