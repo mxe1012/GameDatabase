@@ -26,7 +26,7 @@ namespace GameDatabase.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("all")]
-        public async Task<IActionResult> GetAllInludingDeleted()
+        public async Task<IActionResult> GetAllIncludingDeleted()
         {
             var games = await _gameService.GetGameResponseDtosAsync(true);
             return Ok(games);

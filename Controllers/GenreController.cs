@@ -27,7 +27,7 @@ namespace GameDatabase.Controllers
         
         [Authorize(Roles = "Admin")]
         [HttpGet("all")]
-        public async Task<IActionResult> GetAllInludingDeleted()
+        public async Task<IActionResult> GetAllIncludingDeleted()
         {
             var genres = await _genreService.GetGenreResponseDtosAsync(true);
             return Ok(genres);
