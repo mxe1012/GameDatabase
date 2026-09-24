@@ -20,7 +20,15 @@ namespace GameDatabase.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var games = await _gameService.GetGameResponseDtosAsync();
+            var games = await _gameService.GetGameResponseDtosAsync(false);
+            return Ok(games);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllInludingDeleted()
+        {
+            var games = await _gameService.GetGameResponseDtosAsync(true);
             return Ok(games);
         }
 

@@ -14,9 +14,13 @@ namespace GameDatabase.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Game>> GetGamesAsync()
+        public async Task<IEnumerable<Game>> GetGamesAsync(bool includeDeleted)
         {
-            return await _context.Games.Where(g => g.IsDeleted).OrderBy(g => g.GameId).ToArrayAsync();
+            if (includeDeleted)
+            {
+                return await _context.Games.OrderBy(g => g.GameId).ToListAsync();
+            }
+            return await _context.Games.Where(g => g.IsDeleted).OrderBy(g => g.GameId).ToListAsync();
         }
 
         public async Task<Game> GetByIdAsync(int id)

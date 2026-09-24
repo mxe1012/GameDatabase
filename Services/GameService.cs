@@ -15,9 +15,9 @@ namespace GameDatabase.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync()
+        public async Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync(bool includeDeleted)
         {
-            var games = await _gameRepository.GetGamesAsync();
+            var games = await _gameRepository.GetGamesAsync(includeDeleted);
 
             return games.Select(p => new GameResponseDto
                 {
