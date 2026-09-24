@@ -35,6 +35,6 @@ namespace GameDatabase.Repositories
         Task <Game> GetByIdAsync(int id);
         Task AddAsync(Game game);
         Task UpdateAsync(Game game);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, string? deletedBy);
     }
 }
