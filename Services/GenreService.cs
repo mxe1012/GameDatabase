@@ -23,7 +23,10 @@ namespace GameDatabase.Services
                 {
                     GenreId = g.GenreId,
                     GenreName = g.GenreName,
-                    CreatedBy = g.CreatedBy
+                    CreatedBy = g.CreatedBy,
+                    IsDeleted = g.IsDeleted,
+                    DeletedBy = g.DeletedBy,
+                    DeletedAt = g.DeletedAt
                 }
             );
         }
@@ -41,7 +44,10 @@ namespace GameDatabase.Services
             {
                 GenreId = genre.GenreId,
                 GenreName = genre.GenreName,
-                CreatedBy = genre.CreatedBy
+                CreatedBy = genre.CreatedBy,
+                IsDeleted = genre.IsDeleted,
+                DeletedBy = genre.DeletedBy,
+                DeletedAt = genre.DeletedAt
             };
         }
 
@@ -58,7 +64,10 @@ namespace GameDatabase.Services
             {
                 GenreId = genre.GenreId,
                 GenreName = genre.GenreName,
-                CreatedBy = genre.CreatedBy
+                CreatedBy = genre.CreatedBy,
+                IsDeleted = genre.IsDeleted,
+                DeletedBy = genre.DeletedBy,
+                DeletedAt = genre.DeletedAt
             };
         }
 
@@ -82,8 +91,11 @@ namespace GameDatabase.Services
             {
                 throw new KeyNotFoundException("Genre not found");
             }
-            await _genreRepository.DeleteAsync(id);
-        }
 
+            var deletedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+
+            await _genreRepository.DeleteAsync(id, deletedBy);
+        }
+        
     }
 }
