@@ -20,10 +20,16 @@ namespace GameDatabase.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var engines = await _engineService.GetEngineResponseDtosAsync();
+            var engines = await _engineService.GetEngineResponseDtosAsync(false);
             return Ok(engines);
         }
-
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllInludingDeleted()
+        {
+            var engines = await _engineService.GetEngineResponseDtosAsync(true);
+            return Ok(engines);
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

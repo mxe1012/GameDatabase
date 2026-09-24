@@ -14,8 +14,12 @@ namespace GameDatabase.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Engine>> GetEnginesAsync()
+        public async Task<IEnumerable<Engine>> GetEnginesAsync(bool includeDeleted)
         {
+            if (includeDeleted)
+            {
+                return await _context.Engines.OrderBy(e => e.EngineId).ToListAsync();
+            }
             return await _context.Engines.Where(e => !e.IsDeleted).OrderBy(e => e.EngineId).ToListAsync();
         }
 

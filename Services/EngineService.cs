@@ -15,9 +15,9 @@ namespace GameDatabase.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync()
+        public async Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync(bool includeDeleted)
         {
-            var Engines = await _engineRepository.GetEnginesAsync();
+            var Engines = await _engineRepository.GetEnginesAsync(includeDeleted);
 
             return Engines.Select(g => new EngineResponseDto
                 {
