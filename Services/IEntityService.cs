@@ -12,7 +12,7 @@ namespace GameDatabase.Services
     }
     public interface IGenreService
     {
-        Task<IEnumerable<GenreResponseDto>> GetGenreResponseDtosAsync();
+        Task<IEnumerable<GenreResponseDto>> GetGenreResponseDtosAsync(bool includeDeleted);
         Task<GenreResponseDto> GetGenreByIdAsync(int id);
         Task<GenreResponseDto> AddGenreAsync(GenreRequestDto dto);
         Task UpdateGenreAsync(int id, GenreRequestDto dto);

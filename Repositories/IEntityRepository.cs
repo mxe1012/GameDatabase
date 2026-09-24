@@ -13,7 +13,7 @@ namespace GameDatabase.Repositories
 
     public interface IGenreRepository
     {
-        Task<IEnumerable<Genre>> GetGenresAsync();
+        Task<IEnumerable<Genre>> GetGenresAsync(bool includeDeleted);
         Task <Genre> GetByIdAsync(int id);
         Task AddAsync(Genre genre);
         Task UpdateAsync(Genre genre);

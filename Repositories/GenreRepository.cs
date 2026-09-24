@@ -14,8 +14,12 @@ namespace GameDatabase.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Genre>> GetGenresAsync()
+        public async Task<IEnumerable<Genre>> GetGenresAsync(bool includeDeleted)
         {
+            if (includeDeleted)
+            {
+                return await _context.Genres.OrderBy(g => g.GenreId).ToListAsync();
+            }
             return await _context.Genres.Where(g => !g.IsDeleted).OrderBy(g => g.GenreId).ToListAsync();
         }
 
