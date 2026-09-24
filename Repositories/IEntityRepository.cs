@@ -26,7 +26,7 @@ namespace GameDatabase.Repositories
         Task <Engine> GetByIdAsync(int id);
         Task AddAsync(Engine engine);
         Task UpdateAsync(Engine engine);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, string? deletedBy);
     }
 
     public interface IGameRepository

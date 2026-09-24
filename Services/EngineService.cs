@@ -24,7 +24,10 @@ namespace GameDatabase.Services
                     EngineId = g.EngineId,
                     EngineName = g.EngineName,
                     IsOpenSource = g.IsOpenSource,
-                    CreatedBy = g.CreatedBy
+                    CreatedBy = g.CreatedBy,
+                    IsDeleted = g.IsDeleted,
+                    DeletedBy = g.DeletedBy,
+                    DeletedAt = g.DeletedAt
                 }
             );
         }
@@ -43,7 +46,10 @@ namespace GameDatabase.Services
                 EngineId = engine.EngineId,
                 EngineName = engine.EngineName,
                 IsOpenSource = engine.IsOpenSource,
-                CreatedBy = engine.CreatedBy
+                CreatedBy = engine.CreatedBy,
+                IsDeleted = engine.IsDeleted,
+                DeletedBy = engine.DeletedBy,
+                DeletedAt = engine.DeletedAt
             };
         }
 
@@ -62,7 +68,10 @@ namespace GameDatabase.Services
                 EngineId = engine.EngineId,
                 EngineName = engine.EngineName,
                 IsOpenSource = engine.IsOpenSource,
-                CreatedBy = engine.CreatedBy
+                CreatedBy = engine.CreatedBy,
+                IsDeleted = engine.IsDeleted,
+                DeletedBy = engine.DeletedBy,
+                DeletedAt = engine.DeletedAt
             };
         }
 
@@ -87,7 +96,10 @@ namespace GameDatabase.Services
             {
                 throw new KeyNotFoundException("Engine not found");
             }
-            await _engineRepository.DeleteAsync(id);
+
+            var deletedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+
+            await _engineRepository.DeleteAsync(id, deletedBy);
         }
 
     }
