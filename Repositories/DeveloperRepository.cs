@@ -14,8 +14,12 @@ namespace GameDatabase.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Developer>> GetDevelopersAsync()
+        public async Task<IEnumerable<Developer>> GetDevelopersAsync(bool includeDeleted)
         {
+            if (includeDeleted)
+            {
+                return await _context.Developers.OrderBy(d => d.DeveloperId).ToListAsync();
+            }
             return await _context.Developers.Where(d => !d.IsDeleted).OrderBy(d => d.DeveloperId).ToListAsync();
         }
 

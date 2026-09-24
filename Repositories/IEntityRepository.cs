@@ -4,7 +4,7 @@ namespace GameDatabase.Repositories
 {
     public interface IDeveloperRepository
     {
-        Task<IEnumerable<Developer>> GetDevelopersAsync();
+        Task<IEnumerable<Developer>> GetDevelopersAsync(bool includeDeleted);
         Task <Developer> GetByIdAsync(int id);
         Task AddAsync(Developer developer);
         Task UpdateAsync(Developer developer);
@@ -22,7 +22,7 @@ namespace GameDatabase.Repositories
 
     public interface IEngineRepository
     {
-        Task<IEnumerable<Engine>> GetEnginesAsync();
+        Task<IEnumerable<Engine>> GetEnginesAsync(bool includeDeleted);
         Task <Engine> GetByIdAsync(int id);
         Task AddAsync(Engine engine);
         Task UpdateAsync(Engine engine);
@@ -31,7 +31,7 @@ namespace GameDatabase.Repositories
 
     public interface IGameRepository
     {
-        Task<IEnumerable<Game>> GetGamesAsync();
+        Task<IEnumerable<Game>> GetGamesAsync(bool includeDeleted);
         Task <Game> GetByIdAsync(int id);
         Task AddAsync(Game game);
         Task UpdateAsync(Game game);

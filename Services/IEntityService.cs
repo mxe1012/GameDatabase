@@ -4,7 +4,7 @@ namespace GameDatabase.Services
 {
     public interface IDeveloperService
     {
-        Task<IEnumerable<DeveloperResponseDto>> GetDeveloperResponseDtosAsync();
+        Task<IEnumerable<DeveloperResponseDto>> GetDeveloperResponseDtosAsync(bool includeDeleted);
         Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id);
         Task<DeveloperResponseDto> AddDeveloperAsync(DeveloperRequestDto dto);
         Task UpdateDeveloperAsync(int id, DeveloperRequestDto dto);
@@ -20,7 +20,7 @@ namespace GameDatabase.Services
     }
     public interface IEngineService
     {
-        Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync();
+        Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync(bool includeDeleted);
         Task<EngineResponseDto> GetEngineByIdAsync(int id);
         Task<EngineResponseDto> AddEngineAsync(EngineRequestDto dto);
         Task UpdateEngineAsync(int id, EngineRequestDto dto);
@@ -28,7 +28,7 @@ namespace GameDatabase.Services
     }
     public interface IGameService
     {
-        Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync();
+        Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync(bool includeDeleted);
         Task<GameResponseDto> GetGameByIdAsync(int id);
         Task<GameResponseDto> AddGameAsync(GameRequestDto dto);
         Task UpdateGameAsync(int id, GameRequestDto dto);

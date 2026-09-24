@@ -21,7 +21,15 @@ namespace GameDatabase.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var developers = await _developerService.GetDeveloperResponseDtosAsync();
+            var developers = await _developerService.GetDeveloperResponseDtosAsync(false);
+            return Ok(developers);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllInludingDeleted()
+        {
+            var developers = await _developerService.GetDeveloperResponseDtosAsync(true);
             return Ok(developers);
         }
 
