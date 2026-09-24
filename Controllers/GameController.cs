@@ -20,7 +20,15 @@ namespace GameDatabase.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var games = await _gameService.GetGameResponseDtosAsync();
+            var games = await _gameService.GetGameResponseDtosAsync(false);
+            return Ok(games);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllIncludingDeleted()
+        {
+            var games = await _gameService.GetGameResponseDtosAsync(true);
             return Ok(games);
         }
 
@@ -46,7 +54,7 @@ namespace GameDatabase.Controllers
         }
 
         [Authorize]
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, GameRequestDto dto)
         {
             try
@@ -61,12 +69,16 @@ namespace GameDatabase.Controllers
         }
 
         [Authorize]
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, bool isHardDelete)
         {
+            if(isHardDelete && !User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
             try
             {
-                await _gameService.DeleteGameAsync(id);
+                await _gameService.DeleteGameAsync(id, isHardDelete);
                 return NoContent();
             }
             catch (KeyNotFoundException)

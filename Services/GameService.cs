@@ -7,15 +7,17 @@ namespace GameDatabase.Services
     public class GameService: IGameService
     {
         private readonly IGameRepository _gameRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GameService(IGameRepository gameRepository)
+        public GameService(IGameRepository gameRepository, IHttpContextAccessor httpContextAccessor)
         {
             _gameRepository = gameRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync()
+        public async Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync(bool includeDeleted)
         {
-            var games = await _gameRepository.GetGamesAsync();
+            var games = await _gameRepository.GetGamesAsync(includeDeleted);
 
             return games.Select(p => new GameResponseDto
                 {
@@ -27,6 +29,7 @@ namespace GameDatabase.Services
                     DeveloperId = p.DeveloperId,
                     GenreId = p.GenreId,
                     EngineId = p.EngineId,
+                    CreatedBy = p.CreatedBy
                 }
             );
         }
@@ -50,6 +53,7 @@ namespace GameDatabase.Services
                 DeveloperId = game.DeveloperId,
                 GenreId = game.GenreId,
                 EngineId = game.EngineId,
+                CreatedBy = game.CreatedBy,
             };
         }
 
@@ -63,7 +67,8 @@ namespace GameDatabase.Services
                 IsForSale = dto.IsForSale,
                 DeveloperId = dto.DeveloperId,
                 GenreId = dto.GenreId,
-                EngineId = dto.EngineId, 
+                EngineId = dto.EngineId,
+                CreatedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name 
             };
 
             await _gameRepository.AddAsync(game);
@@ -78,6 +83,7 @@ namespace GameDatabase.Services
                 DeveloperId = game.DeveloperId,
                 GenreId = game.GenreId,
                 EngineId = game.EngineId,
+                CreatedBy = game.CreatedBy
             };
         }
 
@@ -99,7 +105,7 @@ namespace GameDatabase.Services
             await _gameRepository.UpdateAsync(game);
         }
 
-        public async Task DeleteGameAsync(int id)
+        public async Task DeleteGameAsync(int id, bool isHardDelete)
         {
             var game = await _gameRepository.GetByIdAsync(id);
 
@@ -107,7 +113,10 @@ namespace GameDatabase.Services
             {
                 throw new KeyNotFoundException("Game not found");
             }
-            await _gameRepository.DeleteAsync(id);
+
+            var deletedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+
+            await _gameRepository.DeleteAsync(id, deletedBy, isHardDelete);
         }
     }
 }

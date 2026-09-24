@@ -1,6 +1,8 @@
+using GameDatabase.Entites;
+
 namespace GameDatabase.DTOs
 {
-    public class GameResponseDto
+    public class GameResponseDto : IAdutiable
     {
         public int GameId {get; set;}
         public string GameName { get; set; }
@@ -10,5 +12,9 @@ namespace GameDatabase.DTOs
         public int DeveloperId { get; set; }
         public int GenreId { get; set; }
         public int EngineId { get; set; }
+        public string CreatedBy {get; set;}
+        public bool IsDeleted {get; set;}
+        public string? DeletedBy {get; set;}
+        public DateTime? DeletedAt {get; set;}
     }
 }

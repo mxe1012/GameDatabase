@@ -1,6 +1,6 @@
 namespace GameDatabase.Entites
 {
-    public class Game
+    public class Game : IAdutiable
     {
         public int GameId {get; set;}
         public string GameName {get; set;}
@@ -13,5 +13,9 @@ namespace GameDatabase.Entites
         public Genre Genre {get; set;}
         public int EngineId {get; set;}
         public Engine Engine {get; set;}
+        public string? CreatedBy {get; set;}
+        public bool IsDeleted {get; set;}
+        public string? DeletedBy {get; set;}
+        public DateTime? DeletedAt {get; set;}
     }
 }

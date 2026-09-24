@@ -14,9 +14,13 @@ namespace GameDatabase.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Engine>> GetEnginesAsync()
+        public async Task<IEnumerable<Engine>> GetEnginesAsync(bool includeDeleted)
         {
-            return await _context.Engines.OrderBy(e => e.EngineId).ToListAsync();
+            if (includeDeleted)
+            {
+                return await _context.Engines.OrderBy(e => e.EngineId).ToListAsync();
+            }
+            return await _context.Engines.Where(e => !e.IsDeleted).OrderBy(e => e.EngineId).ToListAsync();
         }
 
         public async Task<Engine> GetByIdAsync(int id)
@@ -38,17 +42,24 @@ namespace GameDatabase.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, string? deletedBy, bool isHardDelete)
         {
             var engine = await _context.Engines.FindAsync(id);
 
             if(engine != null)
             {
-                _context.Engines.Remove(engine);
-
+                if (isHardDelete)
+                {
+                    _context.Engines.Remove(engine);
+                }
+                else
+                {
+                    engine.IsDeleted = true;
+                    engine.DeletedBy = deletedBy;
+                    engine.DeletedAt = DateTime.UtcNow;
+                }
                 await _context.SaveChangesAsync();
             }
         }
-
     }
 }

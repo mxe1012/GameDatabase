@@ -20,10 +20,16 @@ namespace GameDatabase.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var engines = await _engineService.GetEngineResponseDtosAsync();
+            var engines = await _engineService.GetEngineResponseDtosAsync(false);
             return Ok(engines);
         }
-
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllIncludingDeleted()
+        {
+            var engines = await _engineService.GetEngineResponseDtosAsync(true);
+            return Ok(engines);
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -45,7 +51,7 @@ namespace GameDatabase.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.EngineId }, created);
         }
         [Authorize]
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, EngineRequestDto dto)
         {
             try
@@ -59,12 +65,16 @@ namespace GameDatabase.Controllers
             }
         }
         [Authorize]
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, bool isHardDelete=false)
         {
+            if(isHardDelete && !User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
             try
             {
-                await _engineService.DeleteEngineAsync(id);
+                await _engineService.DeleteEngineAsync(id, isHardDelete);
                 return NoContent();
             }
             catch (KeyNotFoundException)

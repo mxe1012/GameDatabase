@@ -4,35 +4,35 @@ namespace GameDatabase.Services
 {
     public interface IDeveloperService
     {
-        Task<IEnumerable<DeveloperResponseDto>> GetDeveloperResponseDtosAsync();
+        Task<IEnumerable<DeveloperResponseDto>> GetDeveloperResponseDtosAsync(bool includeDeleted);
         Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id);
         Task<DeveloperResponseDto> AddDeveloperAsync(DeveloperRequestDto dto);
         Task UpdateDeveloperAsync(int id, DeveloperRequestDto dto);
-        Task DeleteDeveloperAsync(int id);
+        Task DeleteDeveloperAsync(int id, bool isHardDelete);
     }
     public interface IGenreService
     {
-        Task<IEnumerable<GenreResponseDto>> GetGenreResponseDtosAsync();
+        Task<IEnumerable<GenreResponseDto>> GetGenreResponseDtosAsync(bool includeDeleted);
         Task<GenreResponseDto> GetGenreByIdAsync(int id);
         Task<GenreResponseDto> AddGenreAsync(GenreRequestDto dto);
         Task UpdateGenreAsync(int id, GenreRequestDto dto);
-        Task DeleteGenreAsync(int id);
+        Task DeleteGenreAsync(int id, bool isHardDelete);
     }
     public interface IEngineService
     {
-        Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync();
+        Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync(bool includeDeleted);
         Task<EngineResponseDto> GetEngineByIdAsync(int id);
         Task<EngineResponseDto> AddEngineAsync(EngineRequestDto dto);
         Task UpdateEngineAsync(int id, EngineRequestDto dto);
-        Task DeleteEngineAsync(int id);
+        Task DeleteEngineAsync(int id, bool isHardDelete);
     }
     public interface IGameService
     {
-        Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync();
+        Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync(bool includeDeleted);
         Task<GameResponseDto> GetGameByIdAsync(int id);
         Task<GameResponseDto> AddGameAsync(GameRequestDto dto);
         Task UpdateGameAsync(int id, GameRequestDto dto);
-        Task DeleteGameAsync(int id);
+        Task DeleteGameAsync(int id, bool isHardDelete);
     }
 
 }

@@ -7,21 +7,27 @@ namespace GameDatabase.Services
     public class EngineService : IEngineService
     {
         private readonly IEngineRepository _engineRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public EngineService(IEngineRepository EngineRepository)
+        public EngineService(IEngineRepository EngineRepository, IHttpContextAccessor httpContextAccessor)
         {
             _engineRepository = EngineRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync()
+        public async Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync(bool includeDeleted)
         {
-            var Engines = await _engineRepository.GetEnginesAsync();
+            var Engines = await _engineRepository.GetEnginesAsync(includeDeleted);
 
             return Engines.Select(g => new EngineResponseDto
                 {
                     EngineId = g.EngineId,
                     EngineName = g.EngineName,
-                    IsOpenSource = g.IsOpenSource
+                    IsOpenSource = g.IsOpenSource,
+                    CreatedBy = g.CreatedBy,
+                    IsDeleted = g.IsDeleted,
+                    DeletedBy = g.DeletedBy,
+                    DeletedAt = g.DeletedAt
                 }
             );
         }
@@ -39,7 +45,11 @@ namespace GameDatabase.Services
             {
                 EngineId = engine.EngineId,
                 EngineName = engine.EngineName,
-                IsOpenSource = engine.IsOpenSource
+                IsOpenSource = engine.IsOpenSource,
+                CreatedBy = engine.CreatedBy,
+                IsDeleted = engine.IsDeleted,
+                DeletedBy = engine.DeletedBy,
+                DeletedAt = engine.DeletedAt
             };
         }
 
@@ -48,7 +58,8 @@ namespace GameDatabase.Services
             var engine = new Engine
             {
               EngineName = dto.EngineName, 
-              IsOpenSource = dto.IsOpenSource 
+              IsOpenSource = dto.IsOpenSource, 
+              CreatedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name
             };
             await _engineRepository.AddAsync(engine);
 
@@ -56,7 +67,11 @@ namespace GameDatabase.Services
             {
                 EngineId = engine.EngineId,
                 EngineName = engine.EngineName,
-                IsOpenSource = engine.IsOpenSource
+                IsOpenSource = engine.IsOpenSource,
+                CreatedBy = engine.CreatedBy,
+                IsDeleted = engine.IsDeleted,
+                DeletedBy = engine.DeletedBy,
+                DeletedAt = engine.DeletedAt
             };
         }
 
@@ -73,7 +88,7 @@ namespace GameDatabase.Services
             await _engineRepository.UpdateAsync(engine);
         }
 
-        public async Task DeleteEngineAsync(int id)
+        public async Task DeleteEngineAsync(int id, bool isHardDelete)
         {
             var engine = await _engineRepository.GetByIdAsync(id);
 
@@ -81,7 +96,10 @@ namespace GameDatabase.Services
             {
                 throw new KeyNotFoundException("Engine not found");
             }
-            await _engineRepository.DeleteAsync(id);
+
+            var deletedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+
+            await _engineRepository.DeleteAsync(id, deletedBy, isHardDelete);
         }
 
     }

@@ -7,20 +7,26 @@ namespace GameDatabase.Services
     public class GenreService : IGenreService
     {
         private readonly IGenreRepository _genreRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GenreService(IGenreRepository genreRepository)
+        public GenreService(IGenreRepository genreRepository, IHttpContextAccessor httpContextAccessor)
         {
             _genreRepository = genreRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<GenreResponseDto>> GetGenreResponseDtosAsync()
+        public async Task<IEnumerable<GenreResponseDto>> GetGenreResponseDtosAsync(bool includeDeleted)
         {
-            var genres = await _genreRepository.GetGenresAsync();
+            var genres = await _genreRepository.GetGenresAsync(includeDeleted);
 
             return genres.Select(g => new GenreResponseDto
                 {
                     GenreId = g.GenreId,
                     GenreName = g.GenreName,
+                    CreatedBy = g.CreatedBy,
+                    IsDeleted = g.IsDeleted,
+                    DeletedBy = g.DeletedBy,
+                    DeletedAt = g.DeletedAt
                 }
             );
         }
@@ -38,6 +44,10 @@ namespace GameDatabase.Services
             {
                 GenreId = genre.GenreId,
                 GenreName = genre.GenreName,
+                CreatedBy = genre.CreatedBy,
+                IsDeleted = genre.IsDeleted,
+                DeletedBy = genre.DeletedBy,
+                DeletedAt = genre.DeletedAt
             };
         }
 
@@ -45,14 +55,19 @@ namespace GameDatabase.Services
         {
             var genre = new Genre
             {
-              GenreName = dto.GenreName,  
+              GenreName = dto.GenreName,
+              CreatedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name  
             };
             await _genreRepository.AddAsync(genre);
 
             return new GenreResponseDto
             {
                 GenreId = genre.GenreId,
-                GenreName = genre.GenreName
+                GenreName = genre.GenreName,
+                CreatedBy = genre.CreatedBy,
+                IsDeleted = genre.IsDeleted,
+                DeletedBy = genre.DeletedBy,
+                DeletedAt = genre.DeletedAt
             };
         }
 
@@ -68,7 +83,7 @@ namespace GameDatabase.Services
             await _genreRepository.UpdateAsync(genre);
         }
 
-        public async Task DeleteGenreAsync(int id)
+        public async Task DeleteGenreAsync(int id, bool isHardDelete)
         {
             var genre = await _genreRepository.GetByIdAsync(id);
 
@@ -76,8 +91,11 @@ namespace GameDatabase.Services
             {
                 throw new KeyNotFoundException("Genre not found");
             }
-            await _genreRepository.DeleteAsync(id);
-        }
 
+            var deletedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+
+            await _genreRepository.DeleteAsync(id, deletedBy, isHardDelete);
+        }
+        
     }
 }
