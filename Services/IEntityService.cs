@@ -24,7 +24,7 @@ namespace GameDatabase.Services
         Task<EngineResponseDto> GetEngineByIdAsync(int id);
         Task<EngineResponseDto> AddEngineAsync(EngineRequestDto dto);
         Task UpdateEngineAsync(int id, EngineRequestDto dto);
-        Task DeleteEngineAsync(int id);
+        Task DeleteEngineAsync(int id, bool isHardDelete);
     }
     public interface IGameService
     {
@@ -32,7 +32,7 @@ namespace GameDatabase.Services
         Task<GameResponseDto> GetGameByIdAsync(int id);
         Task<GameResponseDto> AddGameAsync(GameRequestDto dto);
         Task UpdateGameAsync(int id, GameRequestDto dto);
-        Task DeleteGameAsync(int id);
+        Task DeleteGameAsync(int id, bool isHardDelete);
     }
 
 }

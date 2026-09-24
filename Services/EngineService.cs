@@ -88,7 +88,7 @@ namespace GameDatabase.Services
             await _engineRepository.UpdateAsync(engine);
         }
 
-        public async Task DeleteEngineAsync(int id)
+        public async Task DeleteEngineAsync(int id, bool isHardDelete)
         {
             var engine = await _engineRepository.GetByIdAsync(id);
 
@@ -99,7 +99,7 @@ namespace GameDatabase.Services
 
             var deletedBy = _httpContextAccessor.HttpContext?.User?.Identity?.Name;
 
-            await _engineRepository.DeleteAsync(id, deletedBy);
+            await _engineRepository.DeleteAsync(id, deletedBy, isHardDelete);
         }
 
     }
