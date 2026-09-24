@@ -66,6 +66,11 @@ namespace GameDatabase.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id, bool isHardDelete=false)
         {
+            if(isHardDelete && !User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+
             try
             {
                 await _developerService.DeleteDeveloperAsync(id, isHardDelete);
