@@ -38,7 +38,7 @@ namespace GameDatabase.Controllers
         {   
             try
             {
-                var genre = await _genreService.GetGenreByIdAsync(id);
+                var genre = await _genreService.GetGenreByIdAsync(id, false);
                 return Ok(genre);
             }
             catch (KeyNotFoundException)
@@ -46,6 +46,22 @@ namespace GameDatabase.Controllers
                 return NotFound();
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all/{id}")]
+        public async Task<IActionResult> GetByIdIncludingDeleted(int id)
+        {
+            try
+            {
+                var genre = await _genreService.GetGenreByIdAsync(id, true);
+                return Ok(genre);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(GenreRequestDto dto)

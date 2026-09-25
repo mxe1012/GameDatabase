@@ -23,9 +23,21 @@ namespace GameDatabase.Repositories
             return await _context.Genres.Where(g => !g.IsDeleted).OrderBy(g => g.GenreId).ToListAsync();
         }
 
-        public async Task<Genre> GetByIdAsync(int id)
+        public async Task<Genre> GetByIdAsync(int id, bool isAdmin)
         {
-            return await _context.Genres.FindAsync(id);
+            var genre = await _context.Genres.FindAsync(id);
+
+            if (genre == null)
+            {
+                return null;
+            }
+
+            if (!isAdmin && genre.IsDeleted)
+            {
+                return null;
+            }
+            
+            return genre;
         }
 
         public async Task AddAsync(Genre genre)
