@@ -73,7 +73,10 @@ namespace GameDatabase.Services
 
         public async Task UpdateGenreAsync(int id, GenreRequestDto dto)
         {
-            var genre = await _genreRepository.GetByIdAsync(id, false);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from editing
+            a soft-deleted genre.*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var genre = await _genreRepository.GetByIdAsync(id, isAdmin);
 
             if(genre == null)
             {

@@ -89,7 +89,10 @@ namespace GameDatabase.Services
 
         public async Task UpdateGameAsync(int id, GameRequestDto dto)
         {
-            var game = await _gameRepository.GetByIdAsync(id, false);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from editing
+            a soft-deleted game*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var game = await _gameRepository.GetByIdAsync(id, isAdmin);
 
             if(game == null)
             {

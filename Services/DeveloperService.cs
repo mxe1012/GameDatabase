@@ -94,7 +94,10 @@ namespace GameDatabase.Services
 
         public async Task UpdateDeveloperAsync(int id, DeveloperRequestDto dto)
         {
-            var developer = await _developerRepository.GetByIdAsync(id, false);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from editing
+            a soft-deleted game*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var developer = await _developerRepository.GetByIdAsync(id, isAdmin);
 
             if(developer == null)
             {

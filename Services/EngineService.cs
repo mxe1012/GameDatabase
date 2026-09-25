@@ -77,7 +77,10 @@ namespace GameDatabase.Services
 
         public async Task UpdateEngineAsync(int id, EngineRequestDto dto)
         {
-            var engine = await _engineRepository.GetByIdAsync(id, false);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from editing
+            a soft-deleted game*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var engine = await _engineRepository.GetByIdAsync(id, isAdmin);
 
             if(engine == null)
             {
