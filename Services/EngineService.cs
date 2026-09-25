@@ -32,9 +32,9 @@ namespace GameDatabase.Services
             );
         }
 
-        public async Task<EngineResponseDto> GetEngineByIdAsync(int id)
+        public async Task<EngineResponseDto> GetEngineByIdAsync(int id, bool isAdmin)
         {
-            var engine = await _engineRepository.GetByIdAsync(id);
+            var engine = await _engineRepository.GetByIdAsync(id, isAdmin);
 
             if(engine == null)
             {
@@ -77,7 +77,10 @@ namespace GameDatabase.Services
 
         public async Task UpdateEngineAsync(int id, EngineRequestDto dto)
         {
-            var engine = await _engineRepository.GetByIdAsync(id);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from editing
+            a soft-deleted game*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var engine = await _engineRepository.GetByIdAsync(id, isAdmin);
 
             if(engine == null)
             {
@@ -90,7 +93,11 @@ namespace GameDatabase.Services
 
         public async Task DeleteEngineAsync(int id, bool isHardDelete)
         {
-            var engine = await _engineRepository.GetByIdAsync(id);
+            
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from re-deleting
+            an already soft-deleted engine (prevents overwriting DeletedBy/DeletedAt).*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var engine = await _engineRepository.GetByIdAsync(id, isAdmin);
 
             if(engine == null)
             {

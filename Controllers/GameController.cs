@@ -37,7 +37,22 @@ namespace GameDatabase.Controllers
         {
             try
             {
-                var game = await _gameService.GetGameByIdAsync(id);
+                var game = await _gameService.GetGameByIdAsync(id, false);
+                return Ok(game);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all/{id}")]
+        public async Task<IActionResult> GetByIdIncludingDeleted(int id)
+        {
+            try
+            {
+                var game = await _gameService.GetGameByIdAsync(id, true);
                 return Ok(game);
             }
             catch (KeyNotFoundException)

@@ -36,9 +36,9 @@ namespace GameDatabase.Services
             );
         }
 
-        public async Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id)
+        public async Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id, bool isAdmin)
         {
-            var developer = await _developerRepository.GetByIdAsync(id);
+            var developer = await _developerRepository.GetByIdAsync(id, isAdmin);
 
             if(developer == null)
             {
@@ -94,7 +94,10 @@ namespace GameDatabase.Services
 
         public async Task UpdateDeveloperAsync(int id, DeveloperRequestDto dto)
         {
-            var developer = await _developerRepository.GetByIdAsync(id);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from editing
+            a soft-deleted game*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var developer = await _developerRepository.GetByIdAsync(id, isAdmin);
 
             if(developer == null)
             {
@@ -111,7 +114,10 @@ namespace GameDatabase.Services
 
         public async Task DeleteDeveloperAsync(int id, bool isHardDelete)
         {
-            var developer = await _developerRepository.GetByIdAsync(id);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from re-deleting
+            an already soft-deleted developer (prevents overwriting DeletedBy/DeletedAt).*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var developer = await _developerRepository.GetByIdAsync(id, isAdmin);
 
             if(developer == null)
             {

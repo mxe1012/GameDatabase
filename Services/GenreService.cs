@@ -31,9 +31,9 @@ namespace GameDatabase.Services
             );
         }
 
-        public async Task<GenreResponseDto> GetGenreByIdAsync(int id)
+        public async Task<GenreResponseDto> GetGenreByIdAsync(int id, bool isAdmin)
         {
-            var genre = await _genreRepository.GetByIdAsync(id);
+            var genre = await _genreRepository.GetByIdAsync(id, isAdmin);
 
             if(genre == null)
             {
@@ -73,7 +73,10 @@ namespace GameDatabase.Services
 
         public async Task UpdateGenreAsync(int id, GenreRequestDto dto)
         {
-            var genre = await _genreRepository.GetByIdAsync(id);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from editing
+            a soft-deleted genre.*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var genre = await _genreRepository.GetByIdAsync(id, isAdmin);
 
             if(genre == null)
             {
@@ -85,7 +88,10 @@ namespace GameDatabase.Services
 
         public async Task DeleteGenreAsync(int id, bool isHardDelete)
         {
-            var genre = await _genreRepository.GetByIdAsync(id);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from re-deleting
+            an already soft-deleted genre (prevents overwriting DeletedBy/DeletedAt).*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var genre = await _genreRepository.GetByIdAsync(id, isAdmin);
 
             if(genre == null)
             {

@@ -34,9 +34,9 @@ namespace GameDatabase.Services
             );
         }
 
-        public async Task<GameResponseDto> GetGameByIdAsync(int id)
+        public async Task<GameResponseDto> GetGameByIdAsync(int id, bool isAdmin)
         {
-            var game = await _gameRepository.GetByIdAsync(id);
+            var game = await _gameRepository.GetByIdAsync(id, isAdmin);
 
             if(game == null)
             {
@@ -89,7 +89,10 @@ namespace GameDatabase.Services
 
         public async Task UpdateGameAsync(int id, GameRequestDto dto)
         {
-            var game = await _gameRepository.GetByIdAsync(id);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from editing
+            a soft-deleted game*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var game = await _gameRepository.GetByIdAsync(id, isAdmin);
 
             if(game == null)
             {
@@ -107,7 +110,10 @@ namespace GameDatabase.Services
 
         public async Task DeleteGameAsync(int id, bool isHardDelete)
         {
-            var game = await _gameRepository.GetByIdAsync(id);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from re-deleting
+            an already soft-deleted game (prevents overwriting DeletedBy/DeletedAt).*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var game = await _gameRepository.GetByIdAsync(id, isAdmin);
 
             if(game == null)
             {

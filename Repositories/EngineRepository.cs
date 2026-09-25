@@ -23,9 +23,19 @@ namespace GameDatabase.Repositories
             return await _context.Engines.Where(e => !e.IsDeleted).OrderBy(e => e.EngineId).ToListAsync();
         }
 
-        public async Task<Engine> GetByIdAsync(int id)
+        public async Task<Engine> GetByIdAsync(int id, bool isAdmin)
         {
-            return await _context.Engines.FindAsync(id);
+            var engine = await _context.Engines.FindAsync(id);
+
+            if(engine == null)
+            {
+                return null;
+            }
+            if(!isAdmin && engine.IsDeleted)
+            {
+                return null;
+            }
+            return engine;
         }
 
         public async Task AddAsync(Engine engine)
