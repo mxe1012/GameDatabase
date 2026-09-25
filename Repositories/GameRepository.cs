@@ -23,9 +23,19 @@ namespace GameDatabase.Repositories
             return await _context.Games.Where(g => g.IsDeleted).OrderBy(g => g.GameId).ToListAsync();
         }
 
-        public async Task<Game> GetByIdAsync(int id)
+        public async Task<Game> GetByIdAsync(int id, bool isAdmin)
         {
-            return await _context.Games.FindAsync(id);
+            var game = await _context.Games.FindAsync(id);
+
+            if(game == null)
+            {
+                return null;
+            }
+            if(!isAdmin && game.IsDeleted)
+            {
+                return null;
+            }
+            return game;
         }
 
         public async Task AddAsync(Game game)

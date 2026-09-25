@@ -34,9 +34,9 @@ namespace GameDatabase.Services
             );
         }
 
-        public async Task<GameResponseDto> GetGameByIdAsync(int id)
+        public async Task<GameResponseDto> GetGameByIdAsync(int id, bool isAdmin)
         {
-            var game = await _gameRepository.GetByIdAsync(id);
+            var game = await _gameRepository.GetByIdAsync(id, isAdmin);
 
             if(game == null)
             {
@@ -89,7 +89,7 @@ namespace GameDatabase.Services
 
         public async Task UpdateGameAsync(int id, GameRequestDto dto)
         {
-            var game = await _gameRepository.GetByIdAsync(id);
+            var game = await _gameRepository.GetByIdAsync(id, false);
 
             if(game == null)
             {
@@ -107,7 +107,7 @@ namespace GameDatabase.Services
 
         public async Task DeleteGameAsync(int id, bool isHardDelete)
         {
-            var game = await _gameRepository.GetByIdAsync(id);
+            var game = await _gameRepository.GetByIdAsync(id, false);
 
             if(game == null)
             {
