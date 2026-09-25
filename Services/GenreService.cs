@@ -15,20 +15,27 @@ namespace GameDatabase.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<GenreResponseDto>> GetGenreResponseDtosAsync(bool includeDeleted)
+        public async Task<PagedResult<GenreResponseDto>> GetGenreResponseDtosAsync(GenreQueryParameters queryParams, bool includeDeleted)
         {
-            var genres = await _genreRepository.GetGenresAsync(includeDeleted);
+            var (genres, totalCount) = await _genreRepository.GetGenresAsync(queryParams, includeDeleted);
 
-            return genres.Select(g => new GenreResponseDto
-                {
-                    GenreId = g.GenreId,
-                    GenreName = g.GenreName,
-                    CreatedBy = g.CreatedBy,
-                    IsDeleted = g.IsDeleted,
-                    DeletedBy = g.DeletedBy,
-                    DeletedAt = g.DeletedAt
-                }
-            );
+            var items = genres.Select(g => new GenreResponseDto
+            {
+                GenreId = g.GenreId,
+                GenreName = g.GenreName,
+                CreatedBy = g.CreatedBy,
+                IsDeleted = g.IsDeleted,
+                DeletedBy = g.DeletedBy,
+                DeletedAt = g.DeletedAt
+            });
+
+            return new PagedResult<GenreResponseDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = queryParams.PageNumber,
+                PageSize = queryParams.PageSize
+            };
         }
 
         public async Task<GenreResponseDto> GetGenreByIdAsync(int id, bool isAdmin)

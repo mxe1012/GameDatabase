@@ -1,4 +1,5 @@
 using GameDatabase.Entites;
+using GameDatabase.DTOs;
 
 namespace GameDatabase.Repositories
 {
@@ -13,7 +14,7 @@ namespace GameDatabase.Repositories
 
     public interface IGenreRepository
     {
-        Task<IEnumerable<Genre>> GetGenresAsync(bool includeDeleted);
+        Task<(IEnumerable<Genre> Genres, int TotalCount)> GetGenresAsync(GenreQueryParameters queryParams, bool includeDeleted);
         Task <Genre> GetByIdAsync(int id, bool isAdmin);
         Task AddAsync(Genre genre);
         Task UpdateAsync(Genre genre);
