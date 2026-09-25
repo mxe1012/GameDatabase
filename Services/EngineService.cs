@@ -90,7 +90,11 @@ namespace GameDatabase.Services
 
         public async Task DeleteEngineAsync(int id, bool isHardDelete)
         {
-            var engine = await _engineRepository.GetByIdAsync(id, false);
+            
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from re-deleting
+            an already soft-deleted engine (prevents overwriting DeletedBy/DeletedAt).*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var engine = await _engineRepository.GetByIdAsync(id, isAdmin);
 
             if(engine == null)
             {

@@ -107,7 +107,10 @@ namespace GameDatabase.Services
 
         public async Task DeleteGameAsync(int id, bool isHardDelete)
         {
-            var game = await _gameRepository.GetByIdAsync(id, false);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from re-deleting
+            an already soft-deleted game (prevents overwriting DeletedBy/DeletedAt).*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var game = await _gameRepository.GetByIdAsync(id, isAdmin);
 
             if(game == null)
             {

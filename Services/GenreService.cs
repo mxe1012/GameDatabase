@@ -85,7 +85,10 @@ namespace GameDatabase.Services
 
         public async Task DeleteGenreAsync(int id, bool isHardDelete)
         {
-            var genre = await _genreRepository.GetByIdAsync(id, false);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from re-deleting
+            an already soft-deleted genre (prevents overwriting DeletedBy/DeletedAt).*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var genre = await _genreRepository.GetByIdAsync(id, isAdmin);
 
             if(genre == null)
             {

@@ -111,7 +111,10 @@ namespace GameDatabase.Services
 
         public async Task DeleteDeveloperAsync(int id, bool isHardDelete)
         {
-            var developer = await _developerRepository.GetByIdAsync(id, false);
+            /* Reuse GetByIdAsync's isAdmin flag to block non-admins from re-deleting
+            an already soft-deleted developer (prevents overwriting DeletedBy/DeletedAt).*/
+            var isAdmin = _httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var developer = await _developerRepository.GetByIdAsync(id, isAdmin);
 
             if(developer == null)
             {
