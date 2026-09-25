@@ -23,9 +23,21 @@ namespace GameDatabase.Repositories
             return await _context.Developers.Where(d => !d.IsDeleted).OrderBy(d => d.DeveloperId).ToListAsync();
         }
 
-        public async Task<Developer> GetByIdAsync(int id)
+        public async Task<Developer> GetByIdAsync(int id, bool isAdmin)
         {
-            return await _context.Developers.FindAsync(id);
+            var developer = await _context.Developers.FindAsync(id);
+
+            if (developer == null)
+            {
+                return null;
+            }
+
+            if (!isAdmin && developer.IsDeleted)
+            {
+                return null;
+            }
+
+            return developer;
         }
 
         public async Task AddAsync(Developer developer)

@@ -38,7 +38,22 @@ namespace GameDatabase.Controllers
         {
             try
             {
-                var developer = await _developerService.GetDeveloperByIdAsync(id);
+                var developer = await _developerService.GetDeveloperByIdAsync(id, false);
+                return Ok(developer);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all/{id}")]
+        public async Task<IActionResult> GetByIdIncludingDeleted(int id)
+        {
+            try
+            {
+                var developer = await _developerService.GetDeveloperByIdAsync(id, true);
                 return Ok(developer);
             }
             catch (KeyNotFoundException)

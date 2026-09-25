@@ -36,9 +36,9 @@ namespace GameDatabase.Services
             );
         }
 
-        public async Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id)
+        public async Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id, bool isAdmin)
         {
-            var developer = await _developerRepository.GetByIdAsync(id);
+            var developer = await _developerRepository.GetByIdAsync(id, isAdmin);
 
             if(developer == null)
             {
@@ -94,7 +94,7 @@ namespace GameDatabase.Services
 
         public async Task UpdateDeveloperAsync(int id, DeveloperRequestDto dto)
         {
-            var developer = await _developerRepository.GetByIdAsync(id);
+            var developer = await _developerRepository.GetByIdAsync(id, false);
 
             if(developer == null)
             {
@@ -111,7 +111,7 @@ namespace GameDatabase.Services
 
         public async Task DeleteDeveloperAsync(int id, bool isHardDelete)
         {
-            var developer = await _developerRepository.GetByIdAsync(id);
+            var developer = await _developerRepository.GetByIdAsync(id, false);
 
             if(developer == null)
             {
