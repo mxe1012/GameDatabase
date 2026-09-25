@@ -23,7 +23,7 @@ namespace GameDatabase.Repositories
 
     public interface IEngineRepository
     {
-        Task<IEnumerable<Engine>> GetEnginesAsync(bool includeDeleted);
+        Task<(IEnumerable<Engine> Engines, int TotalCount)> GetEnginesAsync(EngineQueryParameters queryParams, bool includeDeleted);
         Task <Engine> GetByIdAsync(int id, bool isAdmin);
         Task AddAsync(Engine engine);
         Task UpdateAsync(Engine engine);

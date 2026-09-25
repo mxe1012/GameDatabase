@@ -20,7 +20,7 @@ namespace GameDatabase.Services
     }
     public interface IEngineService
     {
-        Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync(bool includeDeleted);
+        Task<PagedResult<EngineResponseDto>> GetEngineResponseDtosAsync(EngineQueryParameters queryParams, bool includeDeleted);
         Task<EngineResponseDto> GetEngineByIdAsync(int id, bool isAdmin);
         Task<EngineResponseDto> AddEngineAsync(EngineRequestDto dto);
         Task UpdateEngineAsync(int id, EngineRequestDto dto);

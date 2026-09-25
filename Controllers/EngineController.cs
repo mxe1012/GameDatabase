@@ -18,16 +18,17 @@ namespace GameDatabase.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] EngineQueryParameters engineQueryParameters)
         {
-            var engines = await _engineService.GetEngineResponseDtosAsync(false);
+            var engines = await _engineService.GetEngineResponseDtosAsync(engineQueryParameters, false);
             return Ok(engines);
         }
+
         [Authorize(Roles = "Admin")]
         [HttpGet("all")]
-        public async Task<IActionResult> GetAllIncludingDeleted()
+        public async Task<IActionResult> GetAllIncludingDeleted([FromQuery] EngineQueryParameters engineQueryParameters)
         {
-            var engines = await _engineService.GetEngineResponseDtosAsync(true);
+            var engines = await _engineService.GetEngineResponseDtosAsync(engineQueryParameters, true);
             return Ok(engines);
         }
         [HttpGet("{id}")]

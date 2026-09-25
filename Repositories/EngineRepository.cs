@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 using GameDatabase.Data;
 using GameDatabase.Entites;
+using GameDatabase.DTOs;
 
 namespace GameDatabase.Repositories
 {
@@ -14,13 +15,40 @@ namespace GameDatabase.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Engine>> GetEnginesAsync(bool includeDeleted)
+        public async Task<(IEnumerable<Engine> Engines, int TotalCount)> GetEnginesAsync(EngineQueryParameters queryParameters, bool includeDeleted)
         {
-            if (includeDeleted)
+
+            var query = _context.Engines.AsQueryable();
+
+            if (!includeDeleted)
             {
-                return await _context.Engines.OrderBy(e => e.EngineId).ToListAsync();
+                query = query.Where(e => !e.IsDeleted);
             }
-            return await _context.Engines.Where(e => !e.IsDeleted).OrderBy(e => e.EngineId).ToListAsync();
+
+            if (!string.IsNullOrWhiteSpace(queryParameters.EngineName))
+            {
+                query = query.Where(e => e.EngineName == queryParameters.EngineName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryParameters.Search))
+            {
+                query = query.Where(e => e.EngineName.Contains(queryParameters.Search));
+            }
+
+            if (queryParameters.IsOpenSource.HasValue)
+            {
+                query = query.Where(e => e.IsOpenSource == queryParameters.IsOpenSource.Value);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var engines = await query
+                .OrderBy(e => e.EngineId)
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize)
+                .ToListAsync();
+
+            return (engines, totalCount);
         }
 
         public async Task<Engine> GetByIdAsync(int id, bool isAdmin)

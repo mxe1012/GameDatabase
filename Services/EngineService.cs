@@ -15,11 +15,12 @@ namespace GameDatabase.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync(bool includeDeleted)
+        public async Task<PagedResult<EngineResponseDto>> GetEngineResponseDtosAsync(EngineQueryParameters queryParameters, bool includeDeleted)
         {
-            var Engines = await _engineRepository.GetEnginesAsync(includeDeleted);
 
-            return Engines.Select(g => new EngineResponseDto
+            var (engines, totalCount) = await _engineRepository.GetEnginesAsync(queryParameters, includeDeleted);
+
+            var items = engines.Select(g => new EngineResponseDto
                 {
                     EngineId = g.EngineId,
                     EngineName = g.EngineName,
@@ -30,6 +31,15 @@ namespace GameDatabase.Services
                     DeletedAt = g.DeletedAt
                 }
             );
+
+            return new PagedResult<EngineResponseDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = queryParameters.PageNumber,
+                PageSize = queryParameters.PageSize
+            };
+
         }
 
         public async Task<EngineResponseDto> GetEngineByIdAsync(int id, bool isAdmin)
