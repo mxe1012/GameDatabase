@@ -35,7 +35,7 @@ namespace GameDatabase.Controllers
         {
             try
             {
-                var engine = await _engineService.GetEngineByIdAsync(id);
+                var engine = await _engineService.GetEngineByIdAsync(id, false);
                 return Ok(engine);
             }
             catch (KeyNotFoundException)
@@ -43,6 +43,22 @@ namespace GameDatabase.Controllers
                 return NotFound();
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all/{id}")]
+        public async Task<IActionResult> GetByIdIncludingDeleted(int id)
+        {
+            try
+            {
+                var engine = await _engineService.GetEngineByIdAsync(id, true);
+                return Ok(engine);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(EngineRequestDto dto)

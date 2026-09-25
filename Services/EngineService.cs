@@ -32,9 +32,9 @@ namespace GameDatabase.Services
             );
         }
 
-        public async Task<EngineResponseDto> GetEngineByIdAsync(int id)
+        public async Task<EngineResponseDto> GetEngineByIdAsync(int id, bool isAdmin)
         {
-            var engine = await _engineRepository.GetByIdAsync(id);
+            var engine = await _engineRepository.GetByIdAsync(id, isAdmin);
 
             if(engine == null)
             {
@@ -77,7 +77,7 @@ namespace GameDatabase.Services
 
         public async Task UpdateEngineAsync(int id, EngineRequestDto dto)
         {
-            var engine = await _engineRepository.GetByIdAsync(id);
+            var engine = await _engineRepository.GetByIdAsync(id, false);
 
             if(engine == null)
             {
@@ -90,7 +90,7 @@ namespace GameDatabase.Services
 
         public async Task DeleteEngineAsync(int id, bool isHardDelete)
         {
-            var engine = await _engineRepository.GetByIdAsync(id);
+            var engine = await _engineRepository.GetByIdAsync(id, false);
 
             if(engine == null)
             {
