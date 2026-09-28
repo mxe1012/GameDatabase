@@ -33,7 +33,9 @@ namespace GameDatabase.Repositories
             {
                 var pattern = $"%{queryParameters.GeneralSearch.Trim()}%";
 
-                query = query.Where(g => EF.Functions.ILike(g.GameName, pattern));
+                query = query.Where(g => 
+                EF.Functions.ILike(g.GameName, pattern) ||
+                EF.Functions.ILike(g.Developer.DeveloperName, pattern) && !g.Developer.IsDeleted);
             }
 
             if (queryParameters.RetailPrice.HasValue)
