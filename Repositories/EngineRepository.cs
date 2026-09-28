@@ -32,7 +32,7 @@ namespace GameDatabase.Repositories
 
             if (!string.IsNullOrWhiteSpace(queryParameters.Search))
             {
-                var pattern = $"%{queryParameters.Search}%";
+                var pattern = $"%{queryParameters.Search.Trim()}%";
 
                 query = query.Where(e => EF.Functions.ILike(e.EngineName, pattern));
             }
