@@ -2,7 +2,7 @@ namespace GameDatabase.DTOs
 {
     public class EngineQueryParameters
     {   
-        public string? Search {get; set;}
+        public string? GeneralSearch {get; set;}
         public string? EngineName {get; set;}
         public bool? IsOpenSource {get; set;}
         public int PageNumber {get; set;} = 1;
