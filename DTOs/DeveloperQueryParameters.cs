@@ -2,8 +2,8 @@ namespace GameDatabase.DTOs
 {
     public class DeveloperQueryParameters
     {
-        public string? DeveloperName {get; set;}
         public string? GeneralSearch {get; set;}
+        public string? DeveloperName {get; set;}
         public string? City {get; set;}
         public string? State {get; set;}
         public string? CountryCode {get; set;}
