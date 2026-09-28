@@ -21,7 +21,7 @@ namespace GameDatabase.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] DeveloperQueryParameters developerQueryParameters)
         {
-            var developers = await _developerService.GetDeveloperResponseDtosAsync(false);
+            var developers = await _developerService.GetDeveloperResponseDtosAsync(developerQueryParameters, false);
             return Ok(developers);
         }
 
@@ -29,7 +29,7 @@ namespace GameDatabase.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAllIncludingDeleted([FromQuery] DeveloperQueryParameters developerQueryParameters)
         {
-            var developers = await _developerService.GetDeveloperResponseDtosAsync(true);
+            var developers = await _developerService.GetDeveloperResponseDtosAsync(developerQueryParameters, true);
             return Ok(developers);
         }
 
