@@ -30,9 +30,9 @@ namespace GameDatabase.Repositories
                 query = query.Where(e => e.EngineName.ToUpper() == queryParameters.EngineName.ToUpper());
             }
 
-            if (!string.IsNullOrWhiteSpace(queryParameters.Search))
+            if (!string.IsNullOrWhiteSpace(queryParameters.GeneralSearch))
             {
-                var pattern = $"%{queryParameters.Search.Trim()}%";
+                var pattern = $"%{queryParameters.GeneralSearch.Trim()}%";
 
                 query = query.Where(e => EF.Functions.ILike(e.EngineName, pattern));
             }
