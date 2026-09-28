@@ -8,6 +8,8 @@ namespace GameDatabase.DTOs
         public int? PriceLessThan {get; set;}
         public int? PriceGreaterThan {get; set;}
         public DateOnly? ReleaseDate {get; set;}
+        public DateOnly? ReleasedBefore {get; set;}
+        public DateOnly? ReleasedAfter {get; set;}
         public bool? IsForSale {get; set;}
         public int PageNumber {get; set;} = 1;
         public int PageSize {get; set;} = 20;
