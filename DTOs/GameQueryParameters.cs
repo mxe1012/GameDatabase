@@ -4,9 +4,9 @@ namespace GameDatabase.DTOs
     {
         public string? GeneralSearch {get; set;}
         public string? GameName {get; set;}
-        public int? RetailPrice {get; set;}
-        public int? PriceLessThan {get; set;}
-        public int? PriceGreaterThan {get; set;}
+        public decimal? RetailPrice {get; set;}
+        public decimal? PriceLessThan {get; set;}
+        public decimal? PriceGreaterThan {get; set;}
         public DateOnly? ReleaseDate {get; set;}
         public DateOnly? ReleasedOnOrBefore {get; set;}
         public DateOnly? ReleasedOnOrAfter {get; set;}
