@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
+using GameDatabase.DTOs;
 using GameDatabase.Data;
 using GameDatabase.Entites;
 
@@ -14,13 +15,36 @@ namespace GameDatabase.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Genre>> GetGenresAsync(bool includeDeleted)
+        public async Task<(IEnumerable<Genre> Genres, int TotalCount)> GetGenresAsync(GenreQueryParameters queryParams, bool includeDeleted)
         {
-            if (includeDeleted)
+            var query = _context.Genres.AsQueryable();
+
+            if (!includeDeleted)
             {
-                return await _context.Genres.OrderBy(g => g.GenreId).ToListAsync();
+                query = query.Where(g => !g.IsDeleted);
             }
-            return await _context.Genres.Where(g => !g.IsDeleted).OrderBy(g => g.GenreId).ToListAsync();
+
+            if (!string.IsNullOrWhiteSpace(queryParams.GenreName))
+            {
+                query = query.Where(g => g.GenreName.ToUpper() == queryParams.GenreName.ToUpper());
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryParams.GeneralSearch))
+            {
+                var pattern = $"%{queryParams.GeneralSearch.Trim()}%";
+
+                query = query.Where(g => EF.Functions.ILike(g.GenreName, pattern));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var genres = await query
+                .OrderBy(g => g.GenreId)
+                .Skip((queryParams.PageNumber - 1) * queryParams.PageSize)
+                .Take(queryParams.PageSize)
+                .ToListAsync();
+
+            return (genres, totalCount);
         }
 
         public async Task<Genre> GetByIdAsync(int id, bool isAdmin)

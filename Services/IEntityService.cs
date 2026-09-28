@@ -4,7 +4,7 @@ namespace GameDatabase.Services
 {
     public interface IDeveloperService
     {
-        Task<IEnumerable<DeveloperResponseDto>> GetDeveloperResponseDtosAsync(bool includeDeleted);
+        Task<PagedResult<DeveloperResponseDto>> GetDeveloperResponseDtosAsync(DeveloperQueryParameters queryParameters, bool includeDeleted);
         Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id, bool isAdmin);
         Task<DeveloperResponseDto> AddDeveloperAsync(DeveloperRequestDto dto);
         Task UpdateDeveloperAsync(int id, DeveloperRequestDto dto);
@@ -12,7 +12,7 @@ namespace GameDatabase.Services
     }
     public interface IGenreService
     {
-        Task<IEnumerable<GenreResponseDto>> GetGenreResponseDtosAsync(bool includeDeleted);
+        Task<PagedResult<GenreResponseDto>> GetGenreResponseDtosAsync(GenreQueryParameters queryParams, bool includeDeleted);
         Task<GenreResponseDto> GetGenreByIdAsync(int id, bool isAdmin);
         Task<GenreResponseDto> AddGenreAsync(GenreRequestDto dto);
         Task UpdateGenreAsync(int id, GenreRequestDto dto);
@@ -20,7 +20,7 @@ namespace GameDatabase.Services
     }
     public interface IEngineService
     {
-        Task<IEnumerable<EngineResponseDto>> GetEngineResponseDtosAsync(bool includeDeleted);
+        Task<PagedResult<EngineResponseDto>> GetEngineResponseDtosAsync(EngineQueryParameters queryParams, bool includeDeleted);
         Task<EngineResponseDto> GetEngineByIdAsync(int id, bool isAdmin);
         Task<EngineResponseDto> AddEngineAsync(EngineRequestDto dto);
         Task UpdateEngineAsync(int id, EngineRequestDto dto);
@@ -28,7 +28,7 @@ namespace GameDatabase.Services
     }
     public interface IGameService
     {
-        Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync(bool includeDeleted);
+        Task<PagedResult<GameResponseDto>> GetGameResponseDtosAsync(GameQueryParameters queryParameters, bool includeDeleted);
         Task<GameResponseDto> GetGameByIdAsync(int id, bool isAdmin);
         Task<GameResponseDto> AddGameAsync(GameRequestDto dto);
         Task UpdateGameAsync(int id, GameRequestDto dto);

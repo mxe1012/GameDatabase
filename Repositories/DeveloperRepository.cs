@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 using GameDatabase.Data;
 using GameDatabase.Entites;
+using GameDatabase.DTOs;
 
 namespace GameDatabase.Repositories
 {
@@ -14,13 +15,64 @@ namespace GameDatabase.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Developer>> GetDevelopersAsync(bool includeDeleted)
+        public async Task<(IEnumerable<Developer> Developers, int TotalCount)> GetDevelopersAsync(DeveloperQueryParameters queryParameters, bool includeDeleted)
         {
-            if (includeDeleted)
+            var query = _context.Developers.AsQueryable();
+
+            if (!includeDeleted)
             {
-                return await _context.Developers.OrderBy(d => d.DeveloperId).ToListAsync();
+                query = query.Where(d => !d.IsDeleted);
             }
-            return await _context.Developers.Where(d => !d.IsDeleted).OrderBy(d => d.DeveloperId).ToListAsync();
+
+            if (!string.IsNullOrWhiteSpace(queryParameters.DeveloperName))
+            {
+                query = query.Where(d => d.DeveloperName.ToUpper() == queryParameters.DeveloperName.ToUpper());
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryParameters.GeneralSearch))
+            {
+                var pattern = $"%{queryParameters.GeneralSearch.Trim()}%";
+
+                query = query.Where(d => 
+                EF.Functions.ILike(d.DeveloperName, pattern) || 
+                EF.Functions.ILike(d.City, pattern));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryParameters.City))
+            {
+                query = query.Where(d => d.City.ToUpper() == queryParameters.City.ToUpper());
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryParameters.State))
+            {
+                query = query.Where(d => d.State.ToUpper() == queryParameters.State.ToUpper());
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryParameters.CountryCode))
+            {
+                query = query.Where(d => d.CountryCode.ToUpper() == queryParameters.CountryCode.ToUpper());
+            }
+
+            if (queryParameters.YearFounded.HasValue)
+            {
+                query = query.Where(d => d.YearFounded == queryParameters.YearFounded.Value);
+            }
+
+            if (queryParameters.IsActive.HasValue)
+            {
+                query = query.Where(d => d.IsActive == queryParameters.IsActive.Value);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var developers = await query
+                .OrderBy(d => d.DeveloperId)
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize)
+                .ToListAsync();
+
+            return (developers, totalCount);
+
         }
 
         public async Task<Developer> GetByIdAsync(int id, bool isAdmin)

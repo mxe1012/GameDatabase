@@ -19,17 +19,17 @@ namespace GameDatabase.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] GenreQueryParameters genreQueryParameters)
         {
-            var genres = await _genreService.GetGenreResponseDtosAsync(false);
+            var genres = await _genreService.GetGenreResponseDtosAsync(genreQueryParameters, false);
             return Ok(genres);
         }
         
         [Authorize(Roles = "Admin")]
         [HttpGet("all")]
-        public async Task<IActionResult> GetAllIncludingDeleted()
+        public async Task<IActionResult> GetAllIncludingDeleted([FromQuery] GenreQueryParameters genreQueryParameters)
         {
-            var genres = await _genreService.GetGenreResponseDtosAsync(true);
+            var genres = await _genreService.GetGenreResponseDtosAsync(genreQueryParameters, true);
             return Ok(genres);
         }
 
