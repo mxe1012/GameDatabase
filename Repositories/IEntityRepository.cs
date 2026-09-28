@@ -5,7 +5,7 @@ namespace GameDatabase.Repositories
 {
     public interface IDeveloperRepository
     {
-        Task<IEnumerable<Developer>> GetDevelopersAsync(bool includeDeleted);
+        Task<(IEnumerable<Developer> Developers, int TotalCount)> GetDevelopersAsync(DeveloperQueryParameters queryParameters, bool includeDeleted);
         Task <Developer> GetByIdAsync(int id, bool isAdmin);
         Task AddAsync(Developer developer);
         Task UpdateAsync(Developer developer);

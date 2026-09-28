@@ -4,7 +4,7 @@ namespace GameDatabase.Services
 {
     public interface IDeveloperService
     {
-        Task<IEnumerable<DeveloperResponseDto>> GetDeveloperResponseDtosAsync(bool includeDeleted);
+        Task<PagedResult<DeveloperResponseDto>> GetDeveloperResponseDtosAsync(DeveloperQueryParameters queryParameters, bool includeDeleted);
         Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id, bool isAdmin);
         Task<DeveloperResponseDto> AddDeveloperAsync(DeveloperRequestDto dto);
         Task UpdateDeveloperAsync(int id, DeveloperRequestDto dto);
