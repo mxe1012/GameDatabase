@@ -26,27 +26,27 @@ namespace GameDatabase.Repositories
 
             if (!string.IsNullOrWhiteSpace(queryParameters.DeveloperName))
             {
-                query = query.Where(d => d.DeveloperName == queryParameters.DeveloperName);
+                query = query.Where(d => d.DeveloperName.ToUpper() == queryParameters.DeveloperName.ToUpper());
             }
 
             if (!string.IsNullOrWhiteSpace(queryParameters.GeneralSearch))
             {
-                query = query.Where(d => d.DeveloperName.Contains(queryParameters.GeneralSearch));
+                query = query.Where(d => EF.Functions.ILike(d.DeveloperName, $"%{queryParameters.GeneralSearch}%"));
             }
 
             if (!string.IsNullOrWhiteSpace(queryParameters.City))
             {
-                query = query.Where(d => d.City == queryParameters.City);
+                query = query.Where(d => d.City.ToUpper() == queryParameters.City.ToUpper());
             }
 
             if (!string.IsNullOrWhiteSpace(queryParameters.State))
             {
-                query = query.Where(d => d.State == queryParameters.State);
+                query = query.Where(d => d.State.ToUpper() == queryParameters.State.ToUpper());
             }
 
             if (!string.IsNullOrWhiteSpace(queryParameters.CountryCode))
             {
-                query = query.Where(d => d.CountryCode == queryParameters.CountryCode.ToUpper());
+                query = query.Where(d => d.CountryCode.ToUpper() == queryParameters.CountryCode.ToUpper());
             }
 
             if (queryParameters.YearFounded.HasValue)
