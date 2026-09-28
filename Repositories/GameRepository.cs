@@ -45,12 +45,12 @@ namespace GameDatabase.Repositories
 
             if (queryParameters.PriceGreaterThan.HasValue)
             {
-                query = query.Where(g => g.RetailPrice <= queryParameters.PriceGreaterThan.Value);
+                query = query.Where(g => g.RetailPrice >= queryParameters.PriceGreaterThan.Value);
             }
 
             if (queryParameters.PriceLessThan.HasValue)
             {
-                query = query.Where(g => g.RetailPrice >= queryParameters.PriceLessThan.Value);
+                query = query.Where(g => g.RetailPrice <= queryParameters.PriceLessThan.Value);
             }
 
             if (queryParameters.ReleaseDate.HasValue)
