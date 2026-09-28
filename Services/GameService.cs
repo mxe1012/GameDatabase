@@ -15,11 +15,11 @@ namespace GameDatabase.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync(bool includeDeleted)
+        public async Task<PagedResult<GameResponseDto>> GetGameResponseDtosAsync(GameQueryParameters queryParameters, bool includeDeleted)
         {
-            var games = await _gameRepository.GetGamesAsync(includeDeleted);
+            var (games, totalCount) = await _gameRepository.GetGamesAsync(queryParameters, includeDeleted);
 
-            return games.Select(p => new GameResponseDto
+            var items = games.Select(p => new GameResponseDto
                 {
                     GameId = p.GameId,
                     GameName = p.GameName,
@@ -32,6 +32,14 @@ namespace GameDatabase.Services
                     CreatedBy = p.CreatedBy
                 }
             );
+
+            return new PagedResult<GameResponseDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = queryParameters.PageNumber,
+                PageSize = queryParameters.PageSize
+            };
         }
 
         public async Task<GameResponseDto> GetGameByIdAsync(int id, bool isAdmin)
