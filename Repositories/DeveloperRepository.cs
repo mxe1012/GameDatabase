@@ -31,7 +31,11 @@ namespace GameDatabase.Repositories
 
             if (!string.IsNullOrWhiteSpace(queryParameters.GeneralSearch))
             {
-                query = query.Where(d => EF.Functions.ILike(d.DeveloperName, $"%{queryParameters.GeneralSearch}%"));
+                var pattern = $"%{queryParameters.GeneralSearch.Trim()}%";
+
+                query = query.Where(d => 
+                EF.Functions.ILike(d.DeveloperName, pattern) || 
+                EF.Functions.ILike(d.City, pattern));
             }
 
             if (!string.IsNullOrWhiteSpace(queryParameters.City))
