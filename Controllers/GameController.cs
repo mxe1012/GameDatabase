@@ -18,17 +18,17 @@ namespace GameDatabase.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] GameQueryParameters gameQueryParameters)
         {
-            var games = await _gameService.GetGameResponseDtosAsync(false);
+            var games = await _gameService.GetGameResponseDtosAsync(gameQueryParameters, false);
             return Ok(games);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpGet("all")]
-        public async Task<IActionResult> GetAllIncludingDeleted()
+        public async Task<IActionResult> GetAllIncludingDeleted([FromQuery] GameQueryParameters gameQueryParameters)
         {
-            var games = await _gameService.GetGameResponseDtosAsync(true);
+            var games = await _gameService.GetGameResponseDtosAsync(gameQueryParameters, true);
             return Ok(games);
         }
 
