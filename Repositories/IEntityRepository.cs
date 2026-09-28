@@ -32,7 +32,7 @@ namespace GameDatabase.Repositories
 
     public interface IGameRepository
     {
-        Task<IEnumerable<Game>> GetGamesAsync(bool includeDeleted);
+        Task<(IEnumerable<Game> Game, int TotalCount)> GetGamesAsync(GameQueryParameters queryParameters, bool includeDeleted);
         Task <Game> GetByIdAsync(int id, bool isAdmin);
         Task AddAsync(Game game);
         Task UpdateAsync(Game game);

@@ -28,7 +28,7 @@ namespace GameDatabase.Services
     }
     public interface IGameService
     {
-        Task<IEnumerable<GameResponseDto>> GetGameResponseDtosAsync(bool includeDeleted);
+        Task<PagedResult<GameResponseDto>> GetGameResponseDtosAsync(GameQueryParameters queryParameters, bool includeDeleted);
         Task<GameResponseDto> GetGameByIdAsync(int id, bool isAdmin);
         Task<GameResponseDto> AddGameAsync(GameRequestDto dto);
         Task UpdateGameAsync(int id, GameRequestDto dto);
