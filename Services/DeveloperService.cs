@@ -15,11 +15,11 @@ namespace GameDatabase.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<DeveloperResponseDto>> GetDeveloperResponseDtosAsync(bool includeDeleted)
+        public async Task<PagedResult<DeveloperResponseDto>> GetDeveloperResponseDtosAsync(DeveloperQueryParameters queryParameters, bool includeDeleted)
         {
-            var developers = await _developerRepository.GetDevelopersAsync(includeDeleted);
+            var (developers, totalCount) = await _developerRepository.GetDevelopersAsync(queryParameters, includeDeleted);
             
-            return developers.Select(p => new DeveloperResponseDto
+            var items = developers.Select(p => new DeveloperResponseDto
                 {
                     DeveloperId = p.DeveloperId,
                     DeveloperName = p.DeveloperName,
@@ -34,6 +34,14 @@ namespace GameDatabase.Services
                     DeletedAt = p.DeletedAt
                 }
             );
+
+            return new PagedResult<DeveloperResponseDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = queryParameters.PageNumber,
+                PageSize = queryParameters.PageSize
+            };
         }
 
         public async Task<DeveloperResponseDto> GetDeveloperByIdAsync(int id, bool isAdmin)
