@@ -19,7 +19,7 @@ namespace GameDatabase.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] DeveloperQueryParameters developerQueryParameters)
         {
             var developers = await _developerService.GetDeveloperResponseDtosAsync(false);
             return Ok(developers);
@@ -27,7 +27,7 @@ namespace GameDatabase.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("all")]
-        public async Task<IActionResult> GetAllIncludingDeleted()
+        public async Task<IActionResult> GetAllIncludingDeleted([FromQuery] DeveloperQueryParameters developerQueryParameters)
         {
             var developers = await _developerService.GetDeveloperResponseDtosAsync(true);
             return Ok(developers);
