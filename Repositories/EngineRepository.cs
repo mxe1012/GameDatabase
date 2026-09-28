@@ -27,12 +27,14 @@ namespace GameDatabase.Repositories
 
             if (!string.IsNullOrWhiteSpace(queryParameters.EngineName))
             {
-                query = query.Where(e => e.EngineName == queryParameters.EngineName);
+                query = query.Where(e => e.EngineName.ToUpper() == queryParameters.EngineName.ToUpper());
             }
 
             if (!string.IsNullOrWhiteSpace(queryParameters.Search))
             {
-                query = query.Where(e => e.EngineName.Contains(queryParameters.Search));
+                var pattern = $"%{queryParameters.Search}%";
+
+                query = query.Where(e => EF.Functions.ILike(e.EngineName, pattern));
             }
 
             if (queryParameters.IsOpenSource.HasValue)
