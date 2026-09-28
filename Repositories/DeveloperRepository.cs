@@ -46,7 +46,7 @@ namespace GameDatabase.Repositories
 
             if (!string.IsNullOrWhiteSpace(queryParameters.CountryCode))
             {
-                query = query.Where(d => d.CountryCode == queryParameters.CountryCode);
+                query = query.Where(d => d.CountryCode == queryParameters.CountryCode.ToUpper());
             }
 
             if (queryParameters.YearFounded.HasValue)
