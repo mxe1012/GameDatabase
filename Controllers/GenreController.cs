@@ -85,16 +85,26 @@ namespace GameDatabase.Controllers
         }
         [Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id, bool isHardDelete=false)
-        {   
-            if(isHardDelete && !User.IsInRole("Admin"))
-            {
-                return Forbid();
-            }
-
+        public async Task<IActionResult> SoftDelete(int id)
+        {
             try
             {
-                await _genreService.DeleteGenreAsync(id, isHardDelete);
+                await _genreService.DeleteGenreAsync(id, false);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("hard/{id}")]
+        public async Task<IActionResult> HardDelete(int id)
+        {
+            try
+            {
+                await _genreService.DeleteGenreAsync(id, true);
                 return NoContent();
             }
             catch (KeyNotFoundException)
