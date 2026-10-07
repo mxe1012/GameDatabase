@@ -80,21 +80,43 @@ namespace GameDatabase.Repositories
 
         public async Task DeleteAsync(int id, string? deletedBy, bool isHardDelete)
         {
+
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            
             var genre = await _context.Genres.FindAsync(id);
 
             if(genre != null)
             {
-                if (isHardDelete)
+                try
                 {
-                    _context.Genres.Remove(genre);
+                    if (isHardDelete)
+                    {
+                        _context.Genres.Remove(genre);
+                    }
+                    else
+                    {
+                        genre.IsDeleted = true;
+                        genre.DeletedBy = deletedBy;
+                        genre.DeletedAt = DateTime.UtcNow;
+
+                        var games = await _context.Games.Where(g => g.GenreId == id && !g.IsDeleted).ToListAsync();
+
+                        foreach (var game in games)
+                        {
+                            game.IsDeleted = true;
+                            game.DeletedBy = deletedBy;
+                            game.DeletedAt = DateTime.UtcNow;
+                        }
+                    }
+                    await _context.SaveChangesAsync();
+
+                    await transaction.CommitAsync();
                 }
-                else
+                catch
                 {
-                    genre.IsDeleted = true;
-                    genre.DeletedBy = deletedBy;
-                    genre.DeletedAt = DateTime.UtcNow; 
+                    await transaction.RollbackAsync();
+                    throw;
                 }
-                await _context.SaveChangesAsync();
             }
         }
     }
