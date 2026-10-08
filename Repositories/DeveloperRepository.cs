@@ -108,20 +108,43 @@ namespace GameDatabase.Repositories
 
         public async Task DeleteAsync(int id, string? deletedBy, bool isHardDelete)
         {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
             var developer = await _context.Developers.FindAsync(id);
 
             if (developer != null)
             {
-                if(isHardDelete){
-                    _context.Developers.Remove(developer);
-                }
-                else
+                try
                 {
-                    developer.IsDeleted = true;
-                    developer.DeletedBy = deletedBy;
-                    developer.DeletedAt = DateTime.UtcNow; 
+                    if(isHardDelete){
+                        _context.Developers.Remove(developer);
+                    }
+                    else
+                    {
+                        developer.IsDeleted = true;
+                        developer.DeletedBy = deletedBy;
+                        developer.DeletedAt = DateTime.UtcNow; 
+
+                        var games = await _context.Games.Where(g => g.DeveloperId == id && !g.IsDeleted).ToListAsync();
+
+                        foreach (var game in games)
+                        {
+                            game.IsDeleted = true;
+                            game.DeletedBy = deletedBy;
+                            game.DeletedAt = DateTime.Now;
+                        }
+
+
+                    }
+                    await _context.SaveChangesAsync();
+
+                    await transaction.CommitAsync();
                 }
-                await _context.SaveChangesAsync();
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
             }
         }
     }

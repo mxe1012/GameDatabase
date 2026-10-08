@@ -84,21 +84,43 @@ namespace GameDatabase.Repositories
 
         public async Task DeleteAsync(int id, string? deletedBy, bool isHardDelete)
         {
+
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
             var engine = await _context.Engines.FindAsync(id);
 
             if(engine != null)
             {
-                if (isHardDelete)
-                {
-                    _context.Engines.Remove(engine);
+                try {
+                    if (isHardDelete)
+                    {
+                        _context.Engines.Remove(engine);
+                    }
+                    else
+                    {
+                        engine.IsDeleted = true;
+                        engine.DeletedBy = deletedBy;
+                        engine.DeletedAt = DateTime.UtcNow;
+
+                        var games = await _context.Games.Where(g => g.EngineId == id && !g.IsDeleted).ToListAsync();
+
+                        foreach (var game in games)
+                        {
+                            game.IsDeleted = true;
+                            game.DeletedBy = deletedBy;
+                            game.DeletedAt = DateTime.UtcNow;
+                        }
+
+                    }
+                    await _context.SaveChangesAsync();
+
+                    await transaction.CommitAsync();
                 }
-                else
+                catch
                 {
-                    engine.IsDeleted = true;
-                    engine.DeletedBy = deletedBy;
-                    engine.DeletedAt = DateTime.UtcNow;
+                    await transaction.RollbackAsync();
+                    throw;
                 }
-                await _context.SaveChangesAsync();
             }
         }
     }
