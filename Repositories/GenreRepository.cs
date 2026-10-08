@@ -108,7 +108,7 @@ namespace GameDatabase.Repositories
                             game.DeletedAt = DateTime.UtcNow;
                         }
                     }
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(); 
 
                     await transaction.CommitAsync();
                 }
